@@ -6,6 +6,7 @@ import L from "leaflet";
 
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import { Link } from "react-router-dom";
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -29,8 +30,8 @@ export const GeoHubPage: React.FC = () => {
       >
         {/* Camada do Mapa (Skin Visual) */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
         {/* Renderiza os HUDs como Círculos Coloridos */}
@@ -49,12 +50,25 @@ export const GeoHubPage: React.FC = () => {
               radius={40} // 40 metros de raio (Simulando o polígono)
             >
               <Popup>
-                <div className="text-center">
-                  <span className="text-2xl block mb-1">{hud.emoji}</span>
-                  <strong className="text-gray-800">{hud.nickname}</strong>
-                  <p className="text-xs text-gray-500 m-0">{hud.formalName}</p>
-                  <div className="mt-2 text-xs font-bold text-blue-600">
-                    {hud.activeUsers} pessoas aqui
+                <div className="text-center min-w-[120px]">
+                  <span className="text-3xl block mb-2">{hud.emoji}</span>
+                  <strong className="text-gray-800 block text-lg">
+                    {hud.nickname}
+                  </strong>
+                  <p className="text-xs text-gray-500 m-0 mb-3">
+                    {hud.formalName}
+                  </p>
+
+                  {/* BOTÃO DE ENTRAR */}
+                  <Link
+                    to={`/hud/${hud.id}`}
+                    className="block w-full bg-blue-600 text-white text-xs font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-colors no-underline"
+                  >
+                    Entrar no Espaço
+                  </Link>
+
+                  <div className="mt-2 text-[10px] text-gray-400">
+                    {hud.activeUsers} online
                   </div>
                 </div>
               </Popup>

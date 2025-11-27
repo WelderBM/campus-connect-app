@@ -66,3 +66,18 @@ export interface Post {
   isCurated: boolean;
   createdAt: string;
 }
+
+export interface Proposal {
+  id: string;
+  authorId: string;
+
+  type: "NEW_HUD" | "NEW_RULE";
+
+  title: string;
+  description: string;
+  targetCategory: ThemeKey;
+
+  votesFor: number;
+  votesAgainst: number;
+  expiresAt: string;
+}

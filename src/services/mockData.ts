@@ -1,4 +1,4 @@
-import type { University, HUD, User, Post } from "../types";
+import type { University, HUD, User, Post, Proposal } from "../types";
 
 export const MOCK_UNIVERSITY: University = {
   id: "uni-1",
@@ -74,6 +74,32 @@ export const MOCK_POSTS: Post[] = [
   },
 ];
 
+export const MOCK_PROPOSALS: Proposal[] = [
+  {
+    id: "prop-1",
+    authorId: "user-2",
+    type: "NEW_HUD",
+    title: 'Mapear o "Jardim dos Gatos"',
+    description:
+      "Área verde atrás do bloco C onde o pessoal descansa. Categoria Lazer.",
+    targetCategory: "LEISURE",
+    votesFor: 45,
+    votesAgainst: 2,
+    expiresAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+  },
+  {
+    id: "prop-2",
+    authorId: "user-3",
+    type: "NEW_HUD",
+    title: "Sala de Estudos 24h",
+    description: "Transformar a sala 402 em HUD oficial de Estudo Noturno.",
+    targetCategory: "ACADEMIC",
+    votesFor: 120,
+    votesAgainst: 5,
+    expiresAt: new Date(Date.now() + 86400000).toISOString(),
+  },
+];
+
 export const api = {
   getPosts: async (): Promise<Post[]> => {
     return new Promise((resolve) => setTimeout(() => resolve(MOCK_POSTS), 800));
@@ -85,5 +111,10 @@ export const api = {
   },
   getHUDs: async (): Promise<HUD[]> => {
     return new Promise((resolve) => setTimeout(() => resolve(MOCK_HUDS), 600));
+  },
+  getProposals: async (): Promise<Proposal[]> => {
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(MOCK_PROPOSALS), 600)
+    );
   },
 };

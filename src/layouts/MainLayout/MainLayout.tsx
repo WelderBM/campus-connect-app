@@ -6,7 +6,7 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { currentUser } = useAppContext();
 
   const universityName = "Universidade de São Paulo";
-  const universityFlag = "🇧🇷";
+  const universityFlag = <span className="text-2xl mr-2">🇧🇷</span>;
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
@@ -17,9 +17,7 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Lado Esquerdo: Identidade Macro */}
           <div className="flex items-center gap-2">
-            <span className="text-2xl" role="img" aria-label="Country">
-              {universityFlag}
-            </span>
+            {universityFlag}
             <h1 className="text-lg font-bold text-gray-800 tracking-tight">
               {universityName}
             </h1>
