@@ -25,12 +25,15 @@ export const AppProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("--- 1. INICIANDO FETCH ---");
       try {
         const user = await api.getCurrentUser();
         const loadedPosts = await api.getPosts();
 
         setCurrentUser(user);
         setPosts(loadedPosts);
+
+        console.log("--- 2. SUCESSO! Usuário carregado:", user.name);
 
         // Define o filtro inicial baseado no perfil
         if (user.role === "ADVENTURER") {

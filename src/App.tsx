@@ -4,6 +4,7 @@ import { FeedPage } from "@/features/feed/pages/FeedPage";
 import { GeoHubPage } from "@/features/geo-hub/pages/GeoHubPage";
 import { HudPage } from "@/features/geo-hub/pages/HudPage";
 import { GovernancePage } from "./features/governance/GovernancePage";
+import { ProfilePage } from "@/features/profile/pages/ProfilePage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/map" element={<GeoHubPage />} />
           <Route path="/hud/:hudId" element={<HudPage />} />
           <Route path="/governance" element={<GovernancePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

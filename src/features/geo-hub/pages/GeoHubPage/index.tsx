@@ -85,7 +85,7 @@ export const GeoHubPage: React.FC = () => {
       </MapContainer>
 
       {/* Overlay de Título (UI Flutuante) */}
-      <div className="absolute top-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg z-[400]">
+      <div className="absolute bottom-20 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg z-[400]">
         <h2 className="text-sm font-bold text-gray-700">
           📍 Geo-Hub: {MOCK_UNIVERSITY.shortName}
         </h2>
