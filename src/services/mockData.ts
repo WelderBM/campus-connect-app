@@ -373,7 +373,7 @@ export const MOCK_OTHER_USER: User = {
 };
 
 export const MOCK_USERS_LIST: User[] = [
-  MOCK_CURRENT_USER,
+  MOCK_CURRENT_USER, // Welder Barroso (1250 pts)
   {
     id: "user-2",
     name: "Bia Amiga",
@@ -389,7 +389,7 @@ export const MOCK_USERS_LIST: User[] = [
     role: "STUDENT",
     universityId: "uni-1",
     isModerator: true,
-    points: 2100,
+    points: 2100, // Lidera o ranking
     avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos",
   },
   {
@@ -410,6 +410,8 @@ export const MOCK_USERS_LIST: User[] = [
     points: 50,
     avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro",
   },
+  MOCK_CURRENT_USER,
+  MOCK_CURRENT_USER,
 ];
 
 export const MOCK_MESSAGES: Message[] = [
