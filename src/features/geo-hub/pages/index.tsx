@@ -1,4 +1,3 @@
-// src/features/geo-hub/pages/HudPage.tsx
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { MOCK_HUDS, MOCK_POSTS, MOCK_CURRENT_USER } from "@/services/mockData";

@@ -16,7 +16,7 @@ export const ChatHubPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="bg-white border-b border-gray-200 p-6 shadow-sm mb-6">
+      <div className="sticky top-16 bg-white border-b border-gray-200 p-6 shadow-sm mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Mensagens e Grupos</h1>
         <p className="text-gray-500 text-sm mt-1">
           Comunicação persistente entre amigos e colegas.

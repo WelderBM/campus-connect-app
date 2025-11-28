@@ -1,12 +1,9 @@
-import React from "react";
 import { useAppContext } from "@/context/AppContext";
-import { useNavigate } from "react-router-dom"; // Necessário para a navegação do botão Global
 import { universityFlag } from "@/globals/components/universityFlag";
 import type { JSX } from "react";
 
 export default function FilterBar() {
   const { filterLevel, setFilterLevel, currentUser } = useAppContext();
-  const navigate = useNavigate(); // Inicializa o hook de navegação
 
   const filters: {
     level: "GLOBAL" | "NATIONAL" | "INSTITUTION";
@@ -45,7 +42,6 @@ export default function FilterBar() {
               }
             `}
           >
-            {/* Wrapper para Icon/Emoji/Componente: Garante altura e alinhamento central */}
             <span className="flex items-center justify-center h-5 w-5 text-xl shrink-0">
               {filter.icon}
             </span>

@@ -4,13 +4,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { universityFlag } from "@/globals/components/universityFlag";
 import { MOCK_UNIVERSITY } from "@/services/mockData";
 import { PostInputBar } from "@/features/feed/components/PostImputBar";
+import { MapScaleToggle } from "@/features/geo-hub/components/MapTypeToggle";
 
 export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { currentUser } = useAppContext();
 
   const universityName = MOCK_UNIVERSITY.name;
-
-  console.log();
 
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
@@ -55,9 +54,15 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </div>
         </header>
         <main className="flex-grow">{children}</main>
+        {isActive("/map") && (
+          <div className="sticky bottom-4 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
+            <MapScaleToggle />
+          </div>
+        )}
         <div className="sticky bottom-16 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
           <PostInputBar />
         </div>
+
         <nav className="sticky bottom-0 w-full bg-white border-t border-gray-200 py-2 px-6 z-50 shrink-0">
           <div className="mx-auto flex justify-between items-center">
             <Link

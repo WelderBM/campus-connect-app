@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { FeedPage } from "./features/feed";
-import { GlobalViewPage } from "./features/global";
-import { HudPage } from "./features/geo-hub";
 import { GroupChatPage } from "./features/chat";
 import { GovernancePage } from "./features/governance";
 import { ProfilePage } from "./features/profile";
 import { ChatHubPage } from "./features/chat/components/GroupChatPage";
 import { RankingPage } from "./features/ranquing";
+import { HudPage } from "./features/geo-hub/pages/index.tsx";
+import { MapHandler } from "./features/geo-hub/pages/mapHandler/index.tsx";
 
 function App() {
   const UniversityPlaceholder = () => (
@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/feed" replace />} />
           <Route path="/feed" element={<FeedPage />} />
-          <Route path="/map" element={<GlobalViewPage />} />
+          <Route path="/map" element={<MapHandler />} />
           <Route path="/hud/:hudId" element={<HudPage />} />
           <Route path="/chat/:groupId" element={<GroupChatPage />} />
           <Route path="/governance" element={<GovernancePage />} />
