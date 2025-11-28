@@ -72,6 +72,16 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Link>
 
           <Link
+            to="/chat"
+            className={`flex flex-col items-center gap-1 ${
+              isActive("/chat") ? "text-blue-600" : "text-gray-400"
+            } active:scale-95 transition-transform`}
+          >
+            <span className="text-xl">💬</span>
+            <span className="text-[10px] font-bold">Chats</span>
+          </Link>
+
+          <Link
             to="/governance"
             className={`flex flex-col items-center gap-1 ${
               isActive("/governance") ? "text-blue-600" : "text-gray-400"

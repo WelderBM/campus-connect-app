@@ -1,4 +1,4 @@
-import type { University, HUD, User, Post, Proposal } from "../types";
+import type { University, HUD, User, Post, Proposal, Group } from "../types";
 
 export const MOCK_UNIVERSITY: University = {
   id: "uni-1",
@@ -100,6 +100,25 @@ export const MOCK_PROPOSALS: Proposal[] = [
   },
 ];
 
+export const MOCK_GROUPS: Group[] = [
+  {
+    id: "group-1",
+    name: "A Galera do Vôlei 🏐",
+    memberIds: ["user-1", "user-4", "user-5"], // Alice está aqui
+    isPrivate: true,
+    lastMessagePreview: "Amanhã tem jogo às 18h no Coliseu!",
+    lastActive: new Date().toISOString(),
+  },
+  {
+    id: "group-2",
+    name: "TCC - Grupo de Estudo",
+    memberIds: ["user-1", "user-6"],
+    isPrivate: false,
+    lastMessagePreview: "Reunião no Canal de Áudio às 20h.",
+    lastActive: new Date(Date.now() - 3600000).toISOString(),
+  },
+];
+
 export const api = {
   getPosts: async (): Promise<Post[]> => {
     return new Promise((resolve) => setTimeout(() => resolve(MOCK_POSTS), 800));
@@ -115,6 +134,11 @@ export const api = {
   getProposals: async (): Promise<Proposal[]> => {
     return new Promise((resolve) =>
       setTimeout(() => resolve(MOCK_PROPOSALS), 600)
+    );
+  },
+  getGroups: async (): Promise<Group[]> => {
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(MOCK_GROUPS), 300)
     );
   },
 };

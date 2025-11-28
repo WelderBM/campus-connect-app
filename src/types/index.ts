@@ -81,3 +81,12 @@ export interface Proposal {
   votesAgainst: number;
   expiresAt: string;
 }
+
+export interface Group {
+  id: string;
+  name: string;
+  memberIds: string[];
+  isPrivate: boolean;
+  lastMessagePreview: string;
+  lastActive: string;
+}
