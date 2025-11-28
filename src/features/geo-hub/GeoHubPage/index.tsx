@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Circle, Popup, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Polygon, Popup, Marker } from "react-leaflet";
 import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/mockData";
 import type { HUD } from "@/types";
 import { getThemeColors } from "@/utils/themeHelpers";
@@ -18,7 +18,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 export const GeoHubPage: React.FC = () => {
   // Centro do Mapa: Vamos usar a localização do primeiro HUD ou um ponto fixo da USP
-  const centerPosition: [number, number] = [-23.5505, -46.6333];
+  const centerPosition: [number, number] = [2.833227, -60.693891];
 
   return (
     <div className="h-[calc(100vh-140px)] w-full relative">
@@ -34,45 +34,37 @@ export const GeoHubPage: React.FC = () => {
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        {/* Renderiza os HUDs como Círculos Coloridos */}
         {MOCK_HUDS.map((hud: HUD) => {
           const theme = getThemeColors(hud.category);
 
           return (
-            <Circle
+            <Polygon
               key={hud.id}
-              center={[hud.coordinates.lat, hud.coordinates.lng]}
+              positions={hud.polygonCoordinates} // Usa o novo campo
               pathOptions={{
-                color: theme.secondary, // Borda
-                fillColor: theme.primary, // Preenchimento Pastel
-                fillOpacity: 0.6,
+                color: theme.secondary,
+                fillColor: theme.primary,
+                weight: 2, // Espessura da linha
+                fillOpacity: 0.7,
               }}
-              radius={40} // 40 metros de raio (Simulando o polígono)
             >
               <Popup>
-                <div className="text-center min-w-[120px]">
+                {/* ... Conteúdo do Popup permanece igual ... */}
+                <div className="text-center">
                   <span className="text-3xl block mb-2">{hud.emoji}</span>
                   <strong className="text-gray-800 block text-lg">
                     {hud.nickname}
                   </strong>
-                  <p className="text-xs text-gray-500 m-0 mb-3">
-                    {hud.formalName}
-                  </p>
-
-                  {/* BOTÃO DE ENTRAR */}
+                  {/* BOTÃO DE ENTRAR (Link permanece) */}
                   <Link
                     to={`/hud/${hud.id}`}
-                    className="block w-full bg-blue-600 text-white text-xs font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-colors no-underline"
+                    className="block w-full bg-blue-600 text-white text-xs font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition-colors no-underline mt-2"
                   >
                     Entrar no Espaço
                   </Link>
-
-                  <div className="mt-2 text-[10px] text-gray-400">
-                    {hud.activeUsers} online
-                  </div>
                 </div>
               </Popup>
-            </Circle>
+            </Polygon>
           );
         })}
 

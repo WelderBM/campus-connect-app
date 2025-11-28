@@ -1,15 +1,18 @@
 import { useAppContext } from "@/context/AppContext";
+import { universityFlag } from "@/globals/components/universityFlag";
+import type { JSX } from "react";
 
 export default function FilterBar() {
   const { filterLevel, setFilterLevel, currentUser } = useAppContext();
 
   const filters: {
     level: "GLOBAL" | "NATIONAL" | "INSTITUTION";
+    icon: JSX.Element | string;
     label: string;
   }[] = [
-    { level: "GLOBAL", label: "🌍 Global" },
-    { level: "NATIONAL", label: "🇧🇷 Nacional" },
-    { level: "INSTITUTION", label: "🏛️ Minha Instituição" },
+    { level: "GLOBAL", label: "Global", icon: "🌍" },
+    { level: "NATIONAL", label: "Nacional", icon: universityFlag },
+    { level: "INSTITUTION", label: "Minha Instituição", icon: "🏛️" },
   ];
 
   const handleFilterClick = (level: "GLOBAL" | "NATIONAL" | "INSTITUTION") => {
@@ -37,6 +40,7 @@ export default function FilterBar() {
             }
           `}
         >
+          {filter.icon}
           {filter.label}
         </button>
       ))}

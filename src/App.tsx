@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { MainLayout } from "@/layouts/MainLayout/MainLayout";
-import { FeedPage } from "@/features/feed/pages/FeedPage";
-import { GeoHubPage } from "@/features/geo-hub/pages/GeoHubPage";
-import { HudPage } from "@/features/geo-hub/pages/HudPage";
-import { GovernancePage } from "@/features/governance/GovernancePage";
-import { ProfilePage } from "@/features/profile/pages/ProfilePage";
-import { ChatHubPage } from "@/features/chat/pages";
+import { MainLayout } from "./layouts/MainLayout";
+import { FeedPage } from "./features/feed";
+import { GeoHubPage } from "./features/geo-hub/GeoHubPage";
+import { HudPage } from "./features/geo-hub";
+import { GovernancePage } from "./features/governance";
+import { ProfilePage } from "./features/profile/pages/ProfilePage";
+import { ChatHubPage } from "./features/chat/pages/GroupChatPage";
+import { GroupChatPage } from "./features/chat/pages";
 
 function App() {
   return (
@@ -19,12 +20,7 @@ function App() {
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/chat" element={<ChatHubPage />} />
-          <Route
-            path="/chat/:groupId"
-            element={
-              <div className="p-10">Interface de Chat específica...</div>
-            }
-          />
+          <Route path="/chat/:groupId" element={<GroupChatPage />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

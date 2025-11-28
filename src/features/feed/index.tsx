@@ -1,9 +1,11 @@
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
-import FilterBar from "../components/FilterBar";
-import PostCard from "../components/PostCard";
-import { MOCK_HUDS } from "@/services/mockData";
+import FilterBar from "./components/FilterBar";
+import PostCard from "./components/PostCard";
+import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/mockData";
 import type { Post } from "@/types";
+import { universityFlag } from "@/globals/components/universityFlag";
+import { PostInputBar } from "./components/PostImputBar";
 
 const LoadingSkeleton: React.FC = () => (
   <div className="space-y-4">
@@ -24,6 +26,9 @@ const LoadingSkeleton: React.FC = () => (
 export const FeedPage: React.FC = () => {
   const { posts, isLoading, currentUser, filterLevel } = useAppContext();
 
+  const USER_UNI_ID = "uni-1";
+  const USER_COUNTRY_FLAG = universityFlag;
+
   if (isLoading || !currentUser) {
     return (
       <div className="max-w-3xl mx-auto p-4">
@@ -36,9 +41,22 @@ export const FeedPage: React.FC = () => {
   }
 
   const filteredPosts = posts.filter((post) => {
-    if (filterLevel === "GLOBAL") return true;
+    const postHud = MOCK_HUDS.find((h) => h.id === post.hudId);
+    if (!postHud) return false;
 
-    return true;
+    switch (filterLevel) {
+      case "GLOBAL":
+        return post.isCurated;
+
+      case "NATIONAL":
+        return MOCK_UNIVERSITY.countryFlag === USER_COUNTRY_FLAG;
+
+      case "INSTITUTION":
+        return postHud.universityId === USER_UNI_ID;
+
+      default:
+        return true;
+    }
   });
 
   return (
@@ -49,8 +67,8 @@ export const FeedPage: React.FC = () => {
         </h1>
 
         <FilterBar />
+        <PostInputBar />
 
-        {/* Renderiza os Posts */}
         <div className="space-y-6">
           {filteredPosts.map((post: Post) => {
             const hud = MOCK_HUDS.find((h) => h.id === post.hudId);

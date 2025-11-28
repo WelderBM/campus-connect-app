@@ -1,4 +1,3 @@
-// src/features/profile/pages/ProfilePage.tsx
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
 

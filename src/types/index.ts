@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 export const THEME_COLORS = {
   ACADEMIC: {
     primary: "#A8DADC",
@@ -22,9 +24,10 @@ export interface University {
   id: string;
   name: string;
   shortName: string;
-  countryFlag: string;
+  countryFlag: JSX.Element;
   continentColor: string;
   backgroundImage?: string;
+  state: string;
 }
 
 export interface HUD {
@@ -35,7 +38,8 @@ export interface HUD {
   emoji: string;
   category: ThemeKey;
 
-  coordinates: { lat: number; lng: number };
+  polygonCoordinates: [number, number][];
+
   activeUsers: number;
 }
 
@@ -89,4 +93,12 @@ export interface Group {
   isPrivate: boolean;
   lastMessagePreview: string;
   lastActive: string;
+}
+
+export interface Message {
+  id: string;
+  groupId: string;
+  authorId: string;
+  content: string;
+  timestamp: string;
 }
