@@ -4,7 +4,7 @@ export const universityFlag = (
   <ReactCountryFlag
     countryCode="BR"
     svg
-    style={{ width: "1.5em", height: "1.5em", borderRadius: "2px" }}
+    style={{ width: "1.2em", height: "0.9em", borderRadius: "2px" }}
     title="BR"
     className="shadow"
   />

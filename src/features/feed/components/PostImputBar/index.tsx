@@ -7,28 +7,25 @@ export const PostInputBar: React.FC = () => {
   if (!currentUser) return null;
 
   return (
-    <div className="bg-white p-4 mb-6 rounded-xl shadow-lg border border-gray-100">
-      <h2 className="text-xl font-semibold mb-3 text-gray-800">
-        Compartilhe o que está rolando!
-      </h2>
-      <textarea
-        placeholder={`O que está acontecendo na sua área, ${currentUser.name}?`}
-        rows={3}
-        className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 transition-colors"
+    <div className="flex gap-2 items-center w-full p-2 bg-white">
+      <img
+        src={currentUser.avatarUrl}
+        alt="Perfil"
+        className="w-8 h-8 rounded-full shrink-0"
+      />
+      <input
+        type="text"
+        placeholder="No que você está pensando, Welder?"
+        className="flex-grow p-3 border border-gray-300 rounded-full focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
         disabled
       />
-      <div className="flex justify-between items-center mt-3">
-        <p className="text-xs text-gray-400">
-          Clique para anexar 📎 (Imagens, Enquetes, Localização)
-        </p>
-        <button
-          className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-700 transition active:scale-95"
-          onClick={() => alert("Módulo de criação de post abriria aqui!")}
-          disabled
-        >
-          Postar
-        </button>
-      </div>
+      <button
+        className="bg-blue-600 text-white font-bold py-2 px-3 rounded-full hover:bg-blue-700 transition active:scale-95 text-sm shrink-0"
+        onClick={() => alert("Módulo de criação de post abriria aqui!")}
+        disabled
+      >
+        Postar
+      </button>
     </div>
   );
 };
