@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { FeedPage } from "./features/feed";
-import { GeoHubPage } from "./features/geo-hub/GeoHubPage";
+import { GeoHubPage } from "./features/geo-hub/components/GeoHubPage";
 import { HudPage } from "./features/geo-hub";
 import { GovernancePage } from "./features/governance";
 import { ProfilePage } from "./features/profile/pages/ProfilePage";
@@ -9,6 +9,11 @@ import { ChatHubPage } from "./features/chat/pages/GroupChatPage";
 import { GroupChatPage } from "./features/chat/pages";
 
 function App() {
+  const UniversityPlaceholder = () => (
+    <div className="p-10 text-center text-xl text-gray-500">
+      🏢 Página de Universidade Nacional (UFPA, etc.) em construção...
+    </div>
+  );
   return (
     <BrowserRouter>
       <MainLayout>
@@ -17,10 +22,14 @@ function App() {
           <Route path="/feed" element={<FeedPage />} />
           <Route path="/map" element={<GeoHubPage />} />
           <Route path="/hud/:hudId" element={<HudPage />} />
+          <Route path="/chat/:groupId" element={<GroupChatPage />} />
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/chat" element={<ChatHubPage />} />
-          <Route path="/chat/:groupId" element={<GroupChatPage />} />
+          <Route
+            path="/university/:uniId"
+            element={<UniversityPlaceholder />}
+          />
         </Routes>
       </MainLayout>
     </BrowserRouter>

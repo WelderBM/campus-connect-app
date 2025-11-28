@@ -9,14 +9,21 @@ import type {
   Message,
 } from "../types";
 
+// src/services/mockData.ts
+
+// --- NOTA: As coordenadas são aproximadas ao centro do campus principal ---
 export const MOCK_UNIVERSITIES_LIST: University[] = [
+  // =========================================================================
+  // REGIÃO NORTE (5 Universidades)
+  // =========================================================================
   {
     id: "uni-1",
-    name: "Universidade Federal RR",
+    name: "Universidade Federal de Roraima",
     shortName: "UFRR",
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Roraima",
+    centerCoordinates: [2.83328, -60.69378], // Coordenada validada por você
   },
   {
     id: "uni-2",
@@ -25,6 +32,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Pará",
+    centerCoordinates: [-1.4725, -48.4525], // Belém
   },
   {
     id: "uni-3",
@@ -33,6 +41,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Amazonas",
+    centerCoordinates: [-3.085, -60.012], // Manaus
   },
   {
     id: "uni-5",
@@ -41,6 +50,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Acre",
+    centerCoordinates: [-9.957, -67.868], // Rio Branco
   },
   {
     id: "uni-6",
@@ -49,8 +59,12 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Rondônia",
+    centerCoordinates: [-8.761, -63.903], // Porto Velho
   },
 
+  // =========================================================================
+  // REGIÃO NORDESTE (5 Universidades)
+  // =========================================================================
   {
     id: "uni-4",
     name: "Universidade Federal da Bahia",
@@ -58,6 +72,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Bahia",
+    centerCoordinates: [-13.004, -38.514], // Salvador
   },
   {
     id: "uni-7",
@@ -66,6 +81,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Pernambuco",
+    centerCoordinates: [-8.0583, -34.904], // Recife
   },
   {
     id: "uni-8",
@@ -74,6 +90,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Ceará",
+    centerCoordinates: [-3.743, -38.579], // Fortaleza
   },
   {
     id: "uni-9",
@@ -82,6 +99,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Rio Grande do Norte",
+    centerCoordinates: [-5.836, -35.205], // Natal
   },
   {
     id: "uni-10",
@@ -90,15 +108,20 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Maranhão",
+    centerCoordinates: [-2.564, -44.3], // São Luís
   },
 
+  // =========================================================================
+  // REGIÃO CENTRO-OESTE (5 Universidades)
+  // =========================================================================
   {
     id: "uni-11",
-    name: "Universidade deuniversityFlagsília",
+    name: "Universidade de Brasília",
     shortName: "UnB",
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Distrito Federal",
+    centerCoordinates: [-15.765, -47.87], // Brasília
   },
   {
     id: "uni-12",
@@ -107,6 +130,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Goiás",
+    centerCoordinates: [-16.6, -49.26], // Goiânia
   },
   {
     id: "uni-13",
@@ -115,6 +139,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Mato Grosso",
+    centerCoordinates: [-15.6, -56.09], // Cuiabá
   },
   {
     id: "uni-14",
@@ -123,16 +148,21 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Mato Grosso do Sul",
+    centerCoordinates: [-20.51, -54.6], // Campo Grande
   },
   {
     id: "uni-15",
-    name: "Universidade Federal de Jataí",
-    shortName: "UFJ",
+    name: "Universidade Federal de Catalão",
+    shortName: "UFCat",
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Goiás",
+    centerCoordinates: [-18.169, -47.935], // Catalão
   },
 
+  // =========================================================================
+  // REGIÃO SUDESTE (5 Universidades)
+  // =========================================================================
   {
     id: "uni-16",
     name: "Universidade de São Paulo",
@@ -140,6 +170,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "São Paulo",
+    centerCoordinates: [-23.55, -46.634], // São Paulo
   },
   {
     id: "uni-17",
@@ -148,6 +179,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Rio de Janeiro",
+    centerCoordinates: [-22.853, -43.22], // Rio de Janeiro
   },
   {
     id: "uni-18",
@@ -156,6 +188,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Minas Gerais",
+    centerCoordinates: [-19.854, -43.955], // Belo Horizonte
   },
   {
     id: "uni-19",
@@ -164,6 +197,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "São Paulo",
+    centerCoordinates: [-22.815, -47.07], // Campinas
   },
   {
     id: "uni-20",
@@ -172,8 +206,12 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Espírito Santo",
+    centerCoordinates: [-20.315, -40.3], // Vitória
   },
 
+  // =========================================================================
+  // REGIÃO SUL (5 Universidades)
+  // =========================================================================
   {
     id: "uni-21",
     name: "Universidade Federal do Rio Grande do Sul",
@@ -181,6 +219,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Rio Grande do Sul",
+    centerCoordinates: [-30.03, -51.215], // Porto Alegre
   },
   {
     id: "uni-22",
@@ -189,6 +228,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Santa Catarina",
+    centerCoordinates: [-27.5945, -48.5477], // Florianópolis
   },
   {
     id: "uni-23",
@@ -197,6 +237,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Paraná",
+    centerCoordinates: [-25.428, -49.273], // Curitiba
   },
   {
     id: "uni-24",
@@ -205,6 +246,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Paraná",
+    centerCoordinates: [-23.31, -51.18], // Londrina
   },
   {
     id: "uni-25",
@@ -213,6 +255,7 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     countryFlag: universityFlag,
     continentColor: "#FADECB",
     state: "Santa Catarina",
+    centerCoordinates: [-27.59, -48.56], // Florianópolis (UDESC)
   },
 ];
 

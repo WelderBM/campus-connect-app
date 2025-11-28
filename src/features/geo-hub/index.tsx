@@ -15,14 +15,11 @@ export const HudPage: React.FC = () => {
 
   const theme = getThemeClasses(hud.category);
 
-  // 1. LÓGICA DE FILTRO: Pegar apenas posts deste local
   const localPosts = MOCK_POSTS.filter((post) => post.hudId === hud.id);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
       {" "}
-      {/* pb-24 para não esconder atrás da nav bar */}
-      {/* --- CABEÇALHO DO HUD --- */}
       <div className={`${theme.bg} ${theme.border} border-b-4 p-6 shadow-sm`}>
         <Link
           to="/map"
@@ -43,9 +40,7 @@ export const HudPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* --- ÁREA DE AÇÃO E STATUS --- */}
       <div className="p-4 space-y-4 max-w-3xl mx-auto">
-        {/* Card de Status */}
         <div className="bg-white p-4 rounded-xl shadow-sm flex justify-between items-center border border-gray-100">
           <div className="flex items-center gap-2">
             <span className="relative flex h-3 w-3">
@@ -64,8 +59,6 @@ export const HudPage: React.FC = () => {
             {hud.activeUsers} pessoas
           </span>
         </div>
-
-        {/* Botão de Ação Principal (Contextual) */}
         <button
           className={`
             w-full py-4 rounded-xl font-bold text-white shadow-lg transform active:scale-95 transition-all
@@ -81,8 +74,6 @@ export const HudPage: React.FC = () => {
         </button>
 
         <hr className="border-gray-200 my-6" />
-
-        {/* --- FEED LOCAL --- */}
         <div>
           <h3 className="text-lg font-bold text-gray-700 mb-4 px-1">
             Acontecendo aqui

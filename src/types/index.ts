@@ -28,6 +28,7 @@ export interface University {
   continentColor: string;
   backgroundImage?: string;
   state: string;
+  centerCoordinates: [number, number];
 }
 
 export interface HUD {
