@@ -54,7 +54,7 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             </div>
           </div>
         </header>
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow scroll-auto">{children}</main>
         <div className="sticky bottom-16 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
           <PostInputBar />
         </div>
