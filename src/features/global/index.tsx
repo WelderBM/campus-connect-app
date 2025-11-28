@@ -3,7 +3,6 @@ import Globe from "react-globe.gl";
 import { MOCK_UNIVERSITIES_LIST, MOCK_UNIVERSITY } from "@/services/mockData";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
-import { universityFlag } from "@/globals/components/universityFlag";
 
 export const GlobalViewPage: React.FC = () => {
   const { setFilterLevel } = useAppContext();
@@ -38,7 +37,7 @@ export const GlobalViewPage: React.FC = () => {
 
   return (
     <div className="h-full w-full overflow-hidden bg-gray-900 flex justify-center items-center">
-      <div className="absolute top-0 w-full lg:max-w-md p-4 z-50">
+      <div className="absolute top-16 w-full lg:max-w-md p-4 z-50">
         <button
           onClick={() => navigate("/feed")}
           className="text-white text-sm font-semibold bg-black/40 px-3 py-1 rounded-full hover:bg-black/60 transition mb-3"
@@ -51,7 +50,7 @@ export const GlobalViewPage: React.FC = () => {
             Selecione um país para ver as universidades afiliadas.
           </p>
           <p className="text-xs mt-2 text-blue-300">
-            {MOCK_UNIVERSITIES_LIST.length} Universidades Brasileiras Ativas 🇧🇷
+            {MOCK_UNIVERSITIES_LIST.length} Universidades Ativas
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
+import { Link } from "react-router-dom";
 
 export const ProfilePage: React.FC = () => {
   const { currentUser } = useAppContext();
@@ -103,6 +104,15 @@ export const ProfilePage: React.FC = () => {
             </span>
           </div>
         </div>
+      </div>
+
+      <div className="m-4 mt-8">
+        <Link
+          to="/ranking"
+          className="block w-full text-center py-3 rounded-xl font-bold text-white shadow-md bg-gray-900 hover:bg-gray-700 transition active:scale-95 mt-4"
+        >
+          Ver Ranking Completo 🏆
+        </Link>
       </div>
     </div>
   );
