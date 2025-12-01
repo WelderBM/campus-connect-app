@@ -1,4 +1,4 @@
-import { ThemeKey } from "./theme";
+import type { ThemeKey } from "../themes";
 import type { JSX } from "react";
 
 export interface University {

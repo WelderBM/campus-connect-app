@@ -1,25 +1,21 @@
 import {
-  MOCK_USERS_LIST,
-  MOCK_CURRENT_USER,
-  MOCK_COURSES,
-} from "./mocks/userMocks";
-import {
-  MOCK_POSTS,
-  MOCK_HUDS,
   MOCK_GROUPS,
-  MOCK_PROPOSALS,
+  MOCK_HUDS,
   MOCK_MESSAGES,
-} from "./mocks/geoSocialMocks";
-import { getFactionsRanking } from "./dataApi/ranking";
-import {
+  MOCK_POSTS,
+  MOCK_PROPOSALS,
+} from "@/services/geo";
+import { MOCK_CURRENT_USER, MOCK_USERS_LIST } from "@/services/identity";
+import { getFactionsRanking } from "@/services/ranking";
+import type {
+  Post,
   User,
   HUD,
-  Post,
-  Group,
   Proposal,
+  Group,
   Message,
   CourseRanking,
-} from "../types";
+} from "@/types";
 
 export const api = {
   getPosts: async (): Promise<Post[]> => {

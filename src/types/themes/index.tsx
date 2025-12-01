@@ -1,5 +1,3 @@
-import type { JSX } from "react";
-
 export const THEME_COLORS = {
   ACADEMIC: {
     primary: "#A8DADC",

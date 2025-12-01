@@ -1,4 +1,32 @@
-import { ThemeKey } from "./theme";
+import type { ThemeKey } from "../themes";
+
+export type UserRole = "STUDENT" | "MODERATOR" | "ADVENTURER";
+
+export interface Course {
+  id: string;
+  name: string;
+  shortName: string;
+  colorHex: string;
+  universityId: string;
+}
+
+export interface CourseRanking {
+  course: Course;
+  totalXP: number;
+  activeUsers: number;
+  weightedScore: number;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  role: UserRole;
+  universityId: string;
+  courseId?: string;
+  isModerator: boolean;
+  points: number;
+  avatarUrl: string;
+}
 
 export interface Post {
   id: string;
@@ -38,4 +66,12 @@ export interface Proposal {
   votesFor: number;
   votesAgainst: number;
   expiresAt: string;
+}
+
+export interface Course {
+  id: string;
+  name: string;
+  shortName: string;
+  colorHex: string;
+  universityId: string;
 }

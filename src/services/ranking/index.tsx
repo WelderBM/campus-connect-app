@@ -1,9 +1,5 @@
-import {
-  MOCK_COURSES,
-  MOCK_USERS_LIST,
-  MOCK_CURRENT_USER,
-} from "../mocks/userMocks";
-import { CourseRanking } from "../../types";
+import type { CourseRanking } from "@/types/identity";
+import { MOCK_COURSES, MOCK_CURRENT_USER, MOCK_USERS_LIST } from "../identity";
 
 const calculateWeightedXP = (courseId: string): CourseRanking => {
   const course = MOCK_COURSES.find((c) => c.id === courseId);

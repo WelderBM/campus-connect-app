@@ -1,13 +1,6 @@
-import {
-  University,
-  HUD,
-  Post,
-  Proposal,
-  Group,
-  Message,
-  ThemeKey,
-} from "../../types";
-import { MOCK_COURSES } from "./userMocks";
+import type { HUD, University } from "@/types/geo";
+import type { Group, Message, Post, Proposal } from "@/types/identity";
+import type { ThemeKey } from "@/types/themes";
 import type { JSX } from "react";
 
 const BrazilFlag: JSX.Element = (
