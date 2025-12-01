@@ -1,0 +1,35 @@
+import {
+  MOCK_COURSES,
+  MOCK_USERS_LIST,
+  MOCK_CURRENT_USER,
+} from "../mocks/userMocks";
+import { CourseRanking } from "../../types";
+
+const calculateWeightedXP = (courseId: string): CourseRanking => {
+  const course = MOCK_COURSES.find((c) => c.id === courseId);
+  if (!course) throw new Error(`Course ${courseId} not found.`);
+
+  const allUsers = [...MOCK_USERS_LIST, MOCK_CURRENT_USER];
+
+  const members = allUsers.filter((u) => u.courseId === courseId);
+  const activeUsers = members.length;
+
+  const totalXP = members.reduce((sum, user) => sum + (user.points || 0), 0);
+
+  if (activeUsers === 0) {
+    return { course, totalXP: 0, activeUsers: 0, weightedScore: 0 };
+  }
+
+  const averageXP = totalXP / activeUsers;
+  const participationFactor = 1 + activeUsers / 100;
+
+  const weightedScore = averageXP * participationFactor;
+
+  return { course, totalXP, activeUsers, weightedScore };
+};
+
+export const getFactionsRanking = (): CourseRanking[] => {
+  const ranking = MOCK_COURSES.map((course) => calculateWeightedXP(course.id));
+
+  return ranking.sort((a, b) => b.weightedScore - a.weightedScore);
+};

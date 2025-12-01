@@ -16,6 +16,8 @@ export const THEME_COLORS = {
     secondary: "#E76F51",
     label: "Lazer",
   },
+  SPORTS: { primary: "#D3D3D3", secondary: "#555555", label: "Esportes" },
+  GENERAL: { primary: "#EFEFEF", secondary: "#AAAAAA", label: "Geral" },
 } as const;
 
 export type ThemeKey = keyof typeof THEME_COLORS;
@@ -44,19 +46,17 @@ export interface HUD {
   activeUsers: number;
 }
 
-export type UserRole = "ADVENTURER" | "STUDENT";
+export type UserRole = "STUDENT" | "MODERATOR" | "ADVENTURER";
 
 export interface User {
   id: string;
   name: string;
   role: UserRole;
-  avatarUrl?: string;
-
-  universityId?: string;
-  isModerator?: boolean;
-  currentHudId?: string | null;
-
+  universityId: string;
+  courseId?: string;
+  isModerator: boolean;
   points: number;
+  avatarUrl: string;
 }
 
 export interface Post {
@@ -101,5 +101,35 @@ export interface Message {
   groupId: string;
   authorId: string;
   content: string;
-  timestamp: string;
+  timestamp: number;
+}
+
+export interface Course {
+  id: string;
+  name: string;
+  shortName: string;
+  colorHex: string;
+  universityId: string;
+}
+
+export interface CourseRanking {
+  course: Course;
+  totalXP: number;
+  activeUsers: number;
+  weightedScore: number;
+}
+
+export interface Course {
+  id: string;
+  name: string;
+  shortName: string;
+  colorHex: string;
+  universityId: string;
+}
+
+export interface CourseRanking {
+  course: Course;
+  totalXP: number;
+  activeUsers: number;
+  weightedScore: number;
 }

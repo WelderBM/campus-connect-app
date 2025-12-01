@@ -16,14 +16,13 @@ import {
 import type { HUD, University } from "@/types";
 import { getThemeColors } from "@/utils/themeHelpers";
 import L from "leaflet";
-import { Link, useLocation } from "react-router-dom"; // Importe useLocation
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Importe useLocation
 
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import { HudPopupContent } from "../../components/HudPopupContent";
 import { DrawControl } from "../../components/DrawControl";
 
-// Configuração de ícones do Leaflet
 let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
@@ -31,26 +30,25 @@ let DefaultIcon = L.icon({
   iconAnchor: [12, 41],
 });
 L.Marker.prototype.options.icon = DefaultIcon;
+import { useAppContext } from "@/context/AppContext";
 
 const MIN_ZOOM_LEVEL_FOR_HUDS = 16;
 
-// --- COMPONENTE AUXILIAR PARA ATUALIZAR A VISÃO DO MAPA ---
-// O MapContainer não atualiza o centro automaticamente se as props mudarem após a montagem.
-// Precisamos deste componente para "ouvir" as mudanças e chamar map.setView().
 const MapUpdater: React.FC<{ center: [number, number]; zoom: number }> = ({
   center,
   zoom,
 }) => {
+  const { setFilterLevel } = useAppContext();
   const map = useMap();
   useEffect(() => {
     map.setView(center, zoom, {
       animate: true,
     });
+    setFilterLevel("INSTITUTION");
   }, [center, zoom, map]);
   return null;
 };
 
-// --- CAMADA DE VISUALIZAÇÃO (Alfinetes vs Polígonos) ---
 const VisualizationLayer: React.FC = () => {
   const map = useMapEvents({
     zoomend: (e) => {
@@ -116,14 +114,10 @@ const VisualizationLayer: React.FC = () => {
   );
 };
 
-// --- PÁGINA PRINCIPAL DO GEO-HUB ---
 export const GeoHubPage: React.FC = () => {
-  const location = useLocation(); // Hook para ler o estado da navegação (vindo do 3D)
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isDrawingMode, setIsDrawingMode] = useState(false);
-
-  // 1. Lógica de Posição Inicial:
-  // Verifica se existe um estado vindo da navegação (do 3D). Se sim, usa.
-  // Caso contrário, usa o padrão da UFRR.
   const incomingCenter = location.state?.center;
 
   const centerPosition: [number, number] =
@@ -132,9 +126,9 @@ export const GeoHubPage: React.FC = () => {
 
   const handlePolygonSubmit = (coords: [number, number][]) => {
     setIsDrawingMode(false);
-    alert(
-      `Novo Polígono de ${coords.length} pontos criado!\nNavegando para o Formulário de Proposta.`
-    );
+    navigate("/governance/propose", {
+      state: { geometry: coords },
+    });
   };
 
   return (
@@ -142,11 +136,10 @@ export const GeoHubPage: React.FC = () => {
       <MapContainer
         center={centerPosition}
         zoom={16}
-        minZoom={10} // Ajustado para permitir ver o Brasil inteiro
+        minZoom={10}
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%", zIndex: 0 }}
       >
-        {/* Atualizador de Mapa: Garante que o mapa se mova se o centerPosition mudar */}
         <MapUpdater center={centerPosition} zoom={initialZoom} />
 
         <TileLayer
@@ -161,8 +154,7 @@ export const GeoHubPage: React.FC = () => {
         )}
       </MapContainer>
 
-      {/* Overlay de UI */}
-      <div className="absolute top-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg z-[400]">
+      <div className="absolute top-4 left-16 right-16 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg z-[400]">
         <h2 className="text-sm font-bold text-gray-700">
           📍 Geo-Hub:{" "}
           {incomingCenter ? "Visualização Nacional" : MOCK_UNIVERSITY.shortName}

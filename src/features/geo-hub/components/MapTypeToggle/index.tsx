@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context/AppContext";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface MapScaleToggleProps {}
 
@@ -14,6 +14,10 @@ export const MapScaleToggle: React.FC<MapScaleToggleProps> = () => {
     setIsGlobal(!isGlobal);
     setFilterLevel(newScale);
   };
+
+  useEffect(() => {
+    setIsGlobal(filterLevel === "GLOBAL" || filterLevel === "NATIONAL");
+  }, [filterLevel]);
 
   return (
     <button

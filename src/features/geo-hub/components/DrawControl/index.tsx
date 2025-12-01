@@ -1,20 +1,24 @@
 import React from "react";
 import { EditControl } from "react-leaflet-draw";
+import { FeatureGroup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-draw/dist/leaflet.draw.css";
 
-const createButtonIcon = (className: string) => {
-  const Icon = L.Icon.extend({
-    options: {
-      iconUrl: `https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/images/${className}.png`,
-      iconRetinaUrl: `https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/images/${className}-2x.png`,
-      shadowUrl: `https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/images/marker-shadow.png`,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-    },
+// Configuração dos ícones do Leaflet Draw
+// Necessário para evitar imagens quebradas na toolbar de desenho
+const fixDrawIcons = () => {
+  // @ts-ignore
+  delete L.Icon.Default.prototype._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+    iconUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    shadowUrl:
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
   });
-  return new Icon();
 };
+fixDrawIcons();
 
 interface DrawControlProps {
   onPolygonCreated: (coords: [number, number][]) => void;
@@ -28,29 +32,48 @@ export const DrawControl: React.FC<DrawControlProps> = ({
     const layer = e.layer;
 
     if (type === "polygon" || type === "rectangle") {
-      const latLngs = layer
-        .getLatLngs()[0]
-        .map((coord: L.LatLng) => [coord.lat, coord.lng]);
-      onPolygonCreated(latLngs);
+      // Extração segura de coordenadas
+      // Leaflet pode retornar aninhado [[lat, lng]] ou [lat, lng] dependendo da versão/forma
+      const rawLatLngs = layer.getLatLngs();
+
+      // Garante que pegamos o array plano de coordenadas
+      // Polígonos geralmente retornam um array de anéis, pegamos o primeiro (externo)
+      const latLngs = Array.isArray(rawLatLngs[0]) ? rawLatLngs[0] : rawLatLngs;
+
+      const formattedCoords = latLngs.map((coord: any) => [
+        coord.lat,
+        coord.lng,
+      ]);
+
+      console.log("Desenho capturado:", formattedCoords);
+      onPolygonCreated(formattedCoords);
     }
   };
 
   return (
-    <EditControl
-      position="topright"
-      onCreated={handleCreated}
-      draw={{
-        polyline: false,
-        marker: false,
-        circlemarker: false,
-        circle: false,
-        rectangle: { shapeOptions: { color: "#E76F51" } },
-        polygon: { shapeOptions: { color: "#457B9D" } },
-      }}
-      edit={{
-        edit: false,
-        remove: false,
-      }}
-    />
+    <FeatureGroup>
+      <EditControl
+        position="topright"
+        onCreated={handleCreated}
+        draw={{
+          polyline: false,
+          marker: false,
+          circlemarker: false,
+          circle: false,
+          rectangle: {
+            shapeOptions: { color: "#E76F51", weight: 3 },
+          },
+          polygon: {
+            shapeOptions: { color: "#457B9D", weight: 3 },
+            allowIntersection: false,
+            showArea: true,
+          },
+        }}
+        edit={{
+          edit: false,
+          remove: false,
+        }}
+      />
+    </FeatureGroup>
   );
 };

@@ -7,9 +7,141 @@ import type {
   Proposal,
   Group,
   Message,
+  Course,
 } from "../types";
 
-// src/services/mockData.ts
+export interface CourseRanking {
+  course: Course;
+  totalXP: number;
+  activeUsers: number;
+  weightedScore: number;
+}
+
+export const MOCK_COURSES: Course[] = [
+  {
+    id: "course-1",
+    name: "Direito",
+    shortName: "DIREITO",
+    colorHex: "#E63946",
+    universityId: "uni-1",
+  },
+  {
+    id: "course-2",
+    name: "Engenharia Civil",
+    shortName: "ENGENHARIA",
+    colorHex: "#457B9D",
+    universityId: "uni-1",
+  },
+  {
+    id: "course-3",
+    name: "Medicina",
+    shortName: "MEDICINA",
+    colorHex: "#2A9D8F",
+    universityId: "uni-1",
+  },
+  {
+    id: "course-4",
+    name: "Artes Visuais",
+    shortName: "ARTES",
+    colorHex: "#FFC300",
+    universityId: "uni-1",
+  },
+  {
+    id: "course-5",
+    name: "Administração",
+    shortName: "ADM",
+    colorHex: "#A8DADC",
+    universityId: "uni-1",
+  },
+];
+
+// --- Usuário Atual (ATUALIZADO com courseId) ---
+export const MOCK_CURRENT_USER: User = {
+  id: "user-0",
+  name: "Welder Barroso",
+  role: "STUDENT",
+  universityId: "uni-1",
+  courseId: "course-2", // Agora Welder é da Engenharia Civil (course-2)
+  isModerator: false,
+  points: 730,
+  avatarUrl: "https://placehold.co/100x100/99C2FF/FFFFFF?text=W.B",
+};
+
+// --- Lista de Usuários (MOCK_USERS_LIST) ---
+export const MOCK_USERS_LIST: User[] = [
+  {
+    id: "user-1",
+    name: "Carlos Líder",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-2", // Engenharia
+    isModerator: true,
+    points: 2100,
+    avatarUrl: "https://placehold.co/100x100/A8DADC/1D3557?text=C.L",
+  },
+  {
+    id: "user-2",
+    name: "Sofia Aventureira",
+    role: "ADVENTURER", // Aventureiro não tem curso, mas tem uniId
+    universityId: "uni-1",
+    courseId: "",
+    isModerator: false,
+    points: 1100,
+    avatarUrl: "https://placehold.co/100x100/F4A261/1D3557?text=S.A",
+  },
+  {
+    id: "user-3",
+    name: "Pedro Calouro",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-1", // Direito
+    isModerator: false,
+    points: 50,
+    avatarUrl: "https://placehold.co/100x100/E9C46A/1D3557?text=P.C",
+  },
+  // Adicionando mais usuários para simular facções
+  {
+    id: "user-4",
+    name: "Ana",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-2",
+    isModerator: false,
+    points: 150,
+    avatarUrl: "...",
+  }, // Engenharia
+  {
+    id: "user-5",
+    name: "Bia",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-1",
+    isModerator: false,
+    points: 1200,
+    avatarUrl: "...",
+  }, // Direito
+  {
+    id: "user-6",
+    name: "Júlio",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-3",
+    isModerator: false,
+    points: 500,
+    avatarUrl: "...",
+  }, // Medicina
+  {
+    id: "user-7",
+    name: "Lia",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-3",
+    isModerator: false,
+    points: 100,
+    avatarUrl: "...",
+  }, // Medicina
+  // ... adicione mais usuários se necessário
+];
 
 // --- NOTA: As coordenadas são aproximadas ao centro do campus principal ---
 export const MOCK_UNIVERSITIES_LIST: University[] = [
@@ -351,69 +483,6 @@ export const MOCK_HUDS: HUD[] = [
   },
 ];
 
-export const MOCK_CURRENT_USER: User = {
-  id: "user-1",
-  name: "Welder Barroso",
-  role: "STUDENT",
-  universityId: "uni-1",
-  isModerator: true,
-  points: 1250,
-  avatarUrl:
-    "https://avatars.githubusercontent.com/u/92405076?s=400&u=0366f7310c583e788c69059cb969fab7d1562270&v=4",
-};
-
-export const MOCK_OTHER_USER: User = {
-  id: "user-2",
-  name: "Bia Amiga",
-  role: "STUDENT",
-  universityId: "uni-1",
-  isModerator: false,
-  points: 850,
-  avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bia",
-};
-
-export const MOCK_USERS_LIST: User[] = [
-  MOCK_CURRENT_USER, // Welder Barroso (1250 pts)
-  {
-    id: "user-2",
-    name: "Bia Amiga",
-    role: "STUDENT",
-    universityId: "uni-1",
-    isModerator: false,
-    points: 850,
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bia",
-  },
-  {
-    id: "user-3",
-    name: "Carlos Líder",
-    role: "STUDENT",
-    universityId: "uni-1",
-    isModerator: true,
-    points: 2100, // Lidera o ranking
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos",
-  },
-  {
-    id: "user-4",
-    name: "Sofia Aventureira",
-    role: "ADVENTURER",
-    universityId: "uni-1",
-    isModerator: false,
-    points: 1100,
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia",
-  },
-  {
-    id: "user-5",
-    name: "Pedro Calouro",
-    role: "STUDENT",
-    universityId: "uni-1",
-    isModerator: false,
-    points: 50,
-    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro",
-  },
-  MOCK_CURRENT_USER,
-  MOCK_CURRENT_USER,
-];
-
 export const MOCK_MESSAGES: Message[] = [
   {
     id: "msg-1",
@@ -601,4 +670,34 @@ export const api = {
     const sorted = [...MOCK_USERS_LIST].sort((a, b) => b.points - a.points);
     return new Promise((resolve) => setTimeout(() => resolve(sorted), 500));
   },
+  getFactionsRanking: async (): Promise<CourseRanking[]> => {
+    const ranking = MOCK_COURSES.map((course) =>
+      calculateWeightedXP(course.id)
+    );
+
+    return ranking.sort((a, b) => b.weightedScore - a.weightedScore);
+  },
+};
+
+const calculateWeightedXP = (courseId: string): CourseRanking => {
+  const course = MOCK_COURSES.find((c) => c.id === courseId);
+  if (!course) throw new Error(`Course ${courseId} not found.`);
+
+  const allUsers = [...MOCK_USERS_LIST, MOCK_CURRENT_USER];
+
+  const members = allUsers.filter((u) => u.courseId === courseId);
+  const activeUsers = members.length;
+
+  const totalXP = members.reduce((sum, user) => sum + (user.points || 0), 0);
+
+  if (activeUsers === 0) {
+    return { course, totalXP: 0, activeUsers: 0, weightedScore: 0 };
+  }
+
+  const averageXP = totalXP / activeUsers;
+  const participationFactor = 1 + activeUsers / 100;
+
+  const weightedScore = averageXP * participationFactor;
+
+  return { course, totalXP, activeUsers, weightedScore };
 };

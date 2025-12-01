@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "@/services/mockData";
 import type { Proposal } from "@/types";
-import { ProposalCard } from "./components/ProposalCard";
+import { ProposalCard } from "../components/ProposalCard";
 
 export const GovernancePage: React.FC = () => {
   const [proposals, setProposals] = useState<Proposal[]>([]);

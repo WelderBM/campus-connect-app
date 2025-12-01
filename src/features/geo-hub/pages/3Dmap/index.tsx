@@ -54,7 +54,6 @@ export const GlobalViewPage: React.FC = () => {
       1500
     );
     setTimeout(() => {
-      setFilterLevel("INSTITUTION");
       navigate("/map", {
         state: {
           center: point.centerCoordinates,
@@ -62,7 +61,8 @@ export const GlobalViewPage: React.FC = () => {
           uniId: point.id,
         },
       });
-    }, 2500);
+      setFilterLevel("INSTITUTION");
+    }, 1500);
   };
 
   return (
@@ -89,7 +89,7 @@ export const GlobalViewPage: React.FC = () => {
       </div>
 
       <div
-        className="absolute top-0 w-full lg:max-w-md p-4 z-50 pointer-events-none"
+        className="fixed top-16 w-full lg:max-w-md p-4 z-50 pointer-events-none"
         style={{ width: size.width, height: size.height }}
       >
         <div className="flex flex-col items-start pointer-events-auto">
