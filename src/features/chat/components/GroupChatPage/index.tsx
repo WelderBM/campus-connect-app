@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { api } from "@/services/mockData";
-import type { Group } from "@/types";
+import { api } from "@/services/dataApi";
+import type { Group } from "@/types/identity";
 import { Link } from "react-router-dom";
 
 export const ChatHubPage: React.FC = () => {

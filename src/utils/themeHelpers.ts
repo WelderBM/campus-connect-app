@@ -1,5 +1,4 @@
-// src/utils/themeHelpers.ts
-import { type ThemeKey, THEME_COLORS } from "../types";
+import { type ThemeKey, THEME_COLORS } from "../types/themes";
 
 interface ThemeClasses {
   border: string;
@@ -27,6 +26,18 @@ export const getThemeClasses = (category: ThemeKey): ThemeClasses => {
       bg: "bg-white",
       text: "text-leisure-secondary",
       tagBg: "bg-leisure-primary",
+    },
+    SPORTS: {
+      border: "border-sports-secondary",
+      bg: "bg-white",
+      text: "text-sports-secondary",
+      tagBg: "bg-sports-primary",
+    },
+    GENERAL: {
+      border: "border-general-secondary",
+      bg: "bg-white",
+      text: "text-general-secondary",
+      tagBg: "bg-general-primary",
     },
   };
 

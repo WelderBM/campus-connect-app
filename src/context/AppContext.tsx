@@ -1,7 +1,6 @@
-// src/context/AppContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
-import type { User, Post } from "../types";
-import { api } from "../services/mockData";
+import type { User, Post } from "../types/identity";
+import { api } from "../services/dataApi";
 
 interface AppContextType {
   currentUser: User | null;
