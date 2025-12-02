@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { HUD } from "@/types";
+import type { HUD } from "@/types/geo";
 
 interface HudPopupContentProps {
   hud: HUD;

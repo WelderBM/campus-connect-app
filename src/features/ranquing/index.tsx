@@ -1,4 +1,3 @@
-// src/features/profile/pages/RankingPage.tsx
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { RankingCard } from "../profile/components/RankingCard";

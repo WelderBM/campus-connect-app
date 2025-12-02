@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { MOCK_HUDS, MOCK_POSTS, MOCK_CURRENT_USER } from "@/services/mockData";
+import { MOCK_HUDS, MOCK_POSTS } from "@/services/geo";
+import { MOCK_CURRENT_USER } from "@/services/identity";
 import { getThemeClasses } from "@/utils/themeHelpers";
 import PostCard from "@/features/feed/components/PostCard/index";
 

@@ -1,6 +1,6 @@
 // src/features/profile/components/RankingCard.tsx
 import React from "react";
-import type { User } from "@/types";
+import type { User } from "@/types/identity";
 
 interface RankingCardProps {
   user: User;

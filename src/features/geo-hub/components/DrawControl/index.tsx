@@ -4,8 +4,6 @@ import { FeatureGroup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-draw/dist/leaflet.draw.css";
 
-// Configuração dos ícones do Leaflet Draw
-// Necessário para evitar imagens quebradas na toolbar de desenho
 const fixDrawIcons = () => {
   // @ts-ignore
   delete L.Icon.Default.prototype._getIconUrl;
@@ -32,12 +30,8 @@ export const DrawControl: React.FC<DrawControlProps> = ({
     const layer = e.layer;
 
     if (type === "polygon" || type === "rectangle") {
-      // Extração segura de coordenadas
-      // Leaflet pode retornar aninhado [[lat, lng]] ou [lat, lng] dependendo da versão/forma
       const rawLatLngs = layer.getLatLngs();
 
-      // Garante que pegamos o array plano de coordenadas
-      // Polígonos geralmente retornam um array de anéis, pegamos o primeiro (externo)
       const latLngs = Array.isArray(rawLatLngs[0]) ? rawLatLngs[0] : rawLatLngs;
 
       const formattedCoords = latLngs.map((coord: any) => [

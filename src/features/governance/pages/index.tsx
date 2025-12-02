@@ -1,7 +1,6 @@
-// src/features/governance/pages/GovernancePage.tsx
 import React, { useEffect, useState } from "react";
-import { api } from "@/services/mockData";
-import type { Proposal } from "@/types";
+import { api } from "@/services/dataApi";
+import type { Proposal } from "@/types/identity";
 import { ProposalCard } from "../components/ProposalCard";
 
 export const GovernancePage: React.FC = () => {
@@ -29,7 +28,6 @@ export const GovernancePage: React.FC = () => {
           <ProposalCard key={prop.id} proposal={prop} />
         ))}
 
-        {/* Botão Flutuante de Criar (Simulado) */}
         <button
           className="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition active:scale-90 z-40 flex items-center justify-center w-14 h-14"
           title="Criar Nova Proposta"

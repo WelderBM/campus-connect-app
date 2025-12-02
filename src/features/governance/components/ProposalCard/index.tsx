@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { Proposal } from "@/types";
+import type { Proposal } from "@/types/identity";
 import { getThemeClasses } from "@/utils/themeHelpers";
 
 interface ProposalCardProps {
@@ -11,7 +11,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({ proposal }) => {
   const [hasVoted, setHasVoted] = useState(false);
 
   const handleVote = (type: "FOR" | "AGAINST") => {
-    // Aqui chamaria a API real
     setHasVoted(true);
     alert(
       `Voto ${type === "FOR" ? "A FAVOR" : "CONTRA"} registrado! +50 Pontos`
@@ -20,11 +19,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({ proposal }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 relative overflow-hidden">
-      {/* Faixa lateral colorida indicando a categoria proposta */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 ${theme.tagBg}`} />
 
       <div className="pl-3">
-        {/* Cabeçalho */}
         <div className="flex justify-between items-start mb-2">
           <span
             className={`text-[10px] font-bold uppercase tracking-wider ${theme.text} bg-gray-50 px-2 py-1 rounded`}
@@ -41,7 +38,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({ proposal }) => {
           {proposal.description}
         </p>
 
-        {/* Barra de Progresso Visual */}
         <div className="w-full bg-gray-100 h-2 rounded-full mb-4 overflow-hidden flex">
           <div
             className="bg-green-500 h-full"
@@ -55,7 +51,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({ proposal }) => {
           />
         </div>
 
-        {/* Botões de Ação */}
         {!hasVoted ? (
           <div className="flex gap-3">
             <button

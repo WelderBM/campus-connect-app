@@ -5,12 +5,8 @@ import type { Group, Message, User } from "@/types/identity";
 import { MOCK_GROUPS } from "@/services/geo";
 import { MOCK_USERS_LIST, MOCK_CURRENT_USER } from "@/services/identity";
 
-// Mock de dados: Combinamos todos os usuários conhecidos para facilitar a busca
-// Isso substitui a MOCK_ALL_USERS antiga e incompleta.
 const MOCK_ALL_USERS_MOCK = [...MOCK_USERS_LIST, MOCK_CURRENT_USER];
 
-// --- Mock de API para Mensagens ---
-// Simula a obtenção de mensagens, já que não estamos usando o Firestore aqui.
 const MOCK_MESSAGES: Message[] = [
   {
     id: "msg-1",

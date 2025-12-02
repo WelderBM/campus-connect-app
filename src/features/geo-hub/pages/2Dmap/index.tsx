@@ -12,8 +12,8 @@ import {
   MOCK_HUDS,
   MOCK_UNIVERSITIES_LIST,
   MOCK_UNIVERSITY,
-} from "@/services/mockData";
-import type { HUD, University } from "@/types";
+} from "@/services/geo";
+import type { HUD, University } from "@/types/geo";
 import { getThemeColors } from "@/utils/themeHelpers";
 import L from "leaflet";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Importe useLocation

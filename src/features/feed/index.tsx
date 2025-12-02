@@ -2,8 +2,8 @@ import React from "react";
 import { useAppContext } from "@/context/AppContext";
 import FilterBar from "./components/FilterBar";
 import PostCard from "./components/PostCard";
-import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/mockData";
-import type { Post } from "@/types";
+import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
+import type { Post } from "@/types/identity";
 import { universityFlag } from "@/globals/components/universityFlag";
 
 const LoadingSkeleton: React.FC = () => (
