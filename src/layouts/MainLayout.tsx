@@ -59,16 +59,18 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             <MapScaleToggle />
           </div>
         )}
-        <div className="sticky bottom-16 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
-          <PostInputBar />
-        </div>
+        {!isActive("/") && (
+          <div className="sticky bottom-16 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
+            <PostInputBar />
+          </div>
+        )}
 
         <nav className="sticky bottom-0 w-full bg-white border-t border-gray-200 py-2 px-6 z-50 shrink-0">
           <div className="mx-auto flex justify-between items-center">
             <Link
-              to="/feed"
+              to="/"
               className={`flex flex-col items-center gap-1 ${
-                isActive("/feed") ? "text-blue-600" : "text-gray-400"
+                isActive("/") ? "text-blue-600" : "text-gray-400"
               }`}
             >
               <span className="text-xl">🏠</span>

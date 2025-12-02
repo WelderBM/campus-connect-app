@@ -11,8 +11,8 @@ export const GovernancePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="bg-white border-b border-gray-200 p-6 mb-6">
+    <div className="h-full bg-gray-50">
+      <div className=" sticky top-0 z-50 bg-white border-b border-gray-200 p-6 mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Governança</h1>
         <p className="text-gray-500 text-sm mt-1">
           Vote para moldar o mapa da universidade e ganhe pontos.
