@@ -6,7 +6,7 @@ import { StudentHub } from "./StudentHub";
 export const InstitutionalHubPage: React.FC = () => {
   const { currentUser } = useAppContext();
 
-  if (currentUser?.role !== "ADVENTURER") {
+  if (currentUser?.role === "ADVENTURER") {
     return <AdventurerLanding />;
   }
 
