@@ -5,6 +5,7 @@ import PostCard from "./components/PostCard";
 import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
 import type { Post } from "@/types/identity";
 import { universityFlag } from "@/globals/components/universityFlag";
+import { CardContainer } from "@/globals/components/cardContainer";
 
 const LoadingSkeleton: React.FC = () => (
   <div className="space-y-4">
@@ -59,15 +60,15 @@ export const FeedPage: React.FC = () => {
   });
 
   return (
-    <div className="bg-gray-50 pt-8">
+    <CardContainer padding="none">
       <div className="sticky top-16 z-40 bg-gray-50 pt-3 pb-3 shadow-md border-b border-gray-200 px-4">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-6">
           Sala de Convivência
         </h1>
         <FilterBar />
       </div>
-      <div className="space-y-4 pt-4">
-        <div className="space-y-6 p-4">
+      <div>
+        <div className="p-4">
           {filteredPosts.map((post: Post) => {
             const hud = MOCK_HUDS.find((h) => h.id === post.hudId);
 
@@ -88,6 +89,6 @@ export const FeedPage: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </CardContainer>
   );
 };

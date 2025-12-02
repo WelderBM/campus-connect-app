@@ -12,8 +12,8 @@ export const ProfilePage: React.FC = () => {
   const progress = ((currentUser.points % 1000) / 1000) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <div className="bg-white border-b border-gray-200 pb-8 pt-6 px-4 mb-4">
+    <div className="h-full bg-gray-50 pb-24">
+      <div className="sticky top-16 z-40 bg-white border-b border-gray-200 pb-8 pt-6 px-4 mb-4">
         <div className="max-w-md mx-auto text-center">
           <div className="relative inline-block mb-4">
             <div className="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-purple-500">

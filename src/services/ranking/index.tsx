@@ -24,7 +24,7 @@ const calculateWeightedXP = (courseId: string): CourseRanking => {
   return { course, totalXP, activeUsers, weightedScore };
 };
 
-export const getFactionsRanking = (): CourseRanking[] => {
+export const getAlliancesRanking = (): CourseRanking[] => {
   const ranking = MOCK_COURSES.map((course) => calculateWeightedXP(course.id));
 
   return ranking.sort((a, b) => b.weightedScore - a.weightedScore);

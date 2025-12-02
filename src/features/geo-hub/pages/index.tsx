@@ -18,14 +18,16 @@ export const HudPage: React.FC = () => {
   const localPosts = MOCK_POSTS.filter((post) => post.hudId === hud.id);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="h-full bg-gray-50 pb-24">
       {" "}
-      <div className={`${theme.bg} ${theme.border} border-b-4 p-6 shadow-sm`}>
+      <div
+        className={`${theme.bg} ${theme.border} border-b-4 p-6 shadow-sm sticky top-16`}
+      >
         <Link
-          to="/map"
+          to="/"
           className="text-sm text-gray-500 mb-4 block hover:underline flex items-center gap-1"
         >
-          <span>⬅️</span> Voltar para o Mapa
+          <span>⬅️</span> Voltar para o Início
         </Link>
 
         <div className="flex items-center gap-4">

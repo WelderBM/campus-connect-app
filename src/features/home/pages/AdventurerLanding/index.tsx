@@ -17,7 +17,7 @@ export const AdventurerLanding: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-8 bg-white min-h-screen">
+    <div className="p-6 space-y-8 bg-white h-full">
       <h1 className="text-3xl font-extrabold text-gray-900">
         Bem-vindo ao Campus Connect
       </h1>

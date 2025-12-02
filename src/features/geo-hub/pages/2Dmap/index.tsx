@@ -31,6 +31,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 import { useAppContext } from "@/context/AppContext";
+//import { ActionButton } from "@/globals/components/ActionButton";
 
 const MIN_ZOOM_LEVEL_FOR_HUDS = 16;
 
@@ -101,7 +102,7 @@ const VisualizationLayer: React.FC = () => {
                 {uni.name} ({uni.state})
               </p>
               <Link
-                to={`/university/${uni.id}`}
+                to={`/`}
                 className="mt-2 block text-blue-600 text-sm font-bold hover:underline"
               >
                 Ver Página
@@ -154,27 +155,25 @@ export const GeoHubPage: React.FC = () => {
         )}
       </MapContainer>
 
+      {/*
       <div className="absolute top-4 left-16 right-16 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg z-[400]">
         <h2 className="text-sm font-bold text-gray-700">
           📍 Geo-Hub:{" "}
-          {incomingCenter ? "Visualização Nacional" : MOCK_UNIVERSITY.shortName}
+          {incomingCenter ? "Visualização Local" : MOCK_UNIVERSITY.shortName}
         </h2>
         <p className="text-xs text-gray-500">
           {isDrawingMode
             ? "DESENHE O NOVO LIMITE DO HUD."
             : "Explore os espaços e faça check-in."}
         </p>
-        <button
+        <ActionButton
           onClick={() => setIsDrawingMode(!isDrawingMode)}
-          className={`mt-2 w-full py-2 text-sm font-bold rounded-lg transition ${
-            isDrawingMode
-              ? "bg-red-500 text-white hover:bg-red-600"
-              : "bg-green-500 text-white hover:bg-green-600"
-          }`}
-        >
-          {isDrawingMode ? "Cancelar Desenho" : "Propor Novo HUD"}
-        </button>
+          text={isDrawingMode ? "Cancelar Desenho" : "Propor Novo HUD"}
+          variant={isDrawingMode ? "danger" : "success"}
+          className="mt-2 w-full py-2 text-sm font-bold transition"
+        />
       </div>
+        */}
     </div>
   );
 };

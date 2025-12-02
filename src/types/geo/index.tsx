@@ -1,5 +1,7 @@
-import type { ThemeKey } from "../themes";
 import type { JSX } from "react";
+import type { ThemeKey } from "../themes";
+
+export type Coordinates = [number, number];
 
 export interface University {
   id: string;
@@ -9,7 +11,8 @@ export interface University {
   continentColor: string;
   backgroundImage?: string;
   state: string;
-  centerCoordinates: [number, number];
+  centerCoordinates: Coordinates;
+  proximityRadiusKm: number;
 }
 
 export interface HUD {
@@ -19,6 +22,6 @@ export interface HUD {
   nickname: string;
   emoji: string;
   category: ThemeKey;
-  polygonCoordinates: [number, number][];
+  polygonCoordinates: Coordinates[];
   activeUsers: number;
 }

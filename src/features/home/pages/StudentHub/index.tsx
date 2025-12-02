@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 
 export const StudentHub: React.FC = () => {
   const navigate = useNavigate();
-  const [dominantFactions, setDominantFactions] = useState<CourseRanking[]>([]);
+  const [dominantAlliances, setDominantAlliances] = useState<CourseRanking[]>(
+    []
+  );
 
   useEffect(() => {
-    api.getFactionsRanking().then((data) => {
-      setDominantFactions(data.slice(0, 3));
+    api.getAlliancesRanking().then((data) => {
+      setDominantAlliances(data.slice(0, 3));
     });
   }, []);
 
@@ -45,7 +47,7 @@ export const StudentHub: React.FC = () => {
       <div className="bg-white p-4 rounded-xl shadow-lg">
         <h2 className="text-xl font-bold mb-3">🔥 Ranking de Facções</h2>
         <div className="space-y-2">
-          {dominantFactions.map((rank, index) => (
+          {dominantAlliances.map((rank, index) => (
             <div
               key={rank.course.id}
               className="flex justify-between items-center text-sm"

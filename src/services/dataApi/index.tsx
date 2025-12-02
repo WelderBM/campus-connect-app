@@ -6,7 +6,7 @@ import {
   MOCK_PROPOSALS,
 } from "@/services/geo";
 import { MOCK_CURRENT_USER, MOCK_USERS_LIST } from "@/services/identity";
-import { getFactionsRanking } from "@/services/ranking";
+import { getAlliancesRanking } from "@/services/ranking";
 import type {
   Post,
   User,
@@ -47,9 +47,9 @@ export const api = {
     const sorted = [...MOCK_USERS_LIST].sort((a, b) => b.points - a.points);
     return new Promise((resolve) => setTimeout(() => resolve(sorted), 500));
   },
-  getFactionsRanking: async (): Promise<CourseRanking[]> => {
+  getAlliancesRanking: async (): Promise<CourseRanking[]> => {
     return new Promise((resolve) =>
-      setTimeout(() => resolve(getFactionsRanking()), 500)
+      setTimeout(() => resolve(getAlliancesRanking()), 500)
     );
   },
 };

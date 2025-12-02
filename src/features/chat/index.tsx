@@ -169,8 +169,8 @@ export const GroupChatPage: React.FC = () => {
     MOCK_USERS_LIST[0].name === "Carlos Líder" ? "Online" : "Conectado";
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <header className="sticky top-0 bg-white border-b border-gray-200 p-4 shadow-md z-10">
+    <div className="h-full bg-gray-100 flex-col">
+      <header className="sticky top-0 lg:top-16 bg-white border-b border-gray-200 p-4 shadow-md z-10">
         <Link
           to="/chat"
           className="text-blue-500 text-sm block mb-1 hover:underline"
@@ -200,7 +200,7 @@ export const GroupChatPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 lg:left-auto lg:w-96 bg-white border-t border-gray-200 p-4 z-20">
+      <div className="fixed bottom-16 bg-white border-t border-gray-200 p-4 z-20">
         <div className="flex gap-2">
           <input
             type="text"

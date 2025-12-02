@@ -59,7 +59,7 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             <MapScaleToggle />
           </div>
         )}
-        {!isActive("/") && (
+        {isActive("/fed") && (
           <div className="sticky bottom-16 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
             <PostInputBar />
           </div>

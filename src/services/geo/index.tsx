@@ -18,6 +18,8 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     continentColor: "#FADECB",
     state: "Roraima",
     centerCoordinates: [2.83328, -60.69378],
+    proximityRadiusKm: 10,
+    backgroundImage: "https://placehold.co/1920x1080/FADECB/1D3557",
   },
   {
     id: "uni-2",
@@ -27,6 +29,8 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     continentColor: "#FADECB",
     state: "Pará",
     centerCoordinates: [-1.4725, -48.4525],
+    proximityRadiusKm: 10,
+    backgroundImage: "https://placehold.co/1920x1080/FADECB/1D3557",
   },
   {
     id: "uni-3",
@@ -36,6 +40,8 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     continentColor: "#FADECB",
     state: "Amazonas",
     centerCoordinates: [-3.085, -60.012],
+    proximityRadiusKm: 10,
+    backgroundImage: "https://placehold.co/1920x1080/FADECB/1D3557",
   },
   {
     id: "uni-16",
@@ -45,6 +51,8 @@ export const MOCK_UNIVERSITIES_LIST: University[] = [
     continentColor: "#FADECB",
     state: "São Paulo",
     centerCoordinates: [-23.55, -46.634],
+    proximityRadiusKm: 10,
+    backgroundImage: "https://placehold.co/1920x1080/FADECB/1D3557",
   },
 ];
 
