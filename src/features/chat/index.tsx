@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
-import {
-  MOCK_GROUPS,
-  MOCK_USERS_LIST,
-  MOCK_CURRENT_USER,
-} from "@/services/mockData";
-import type { Group, Message, User } from "@/types";
+import type { Group, Message, User } from "@/types/identity";
+import { MOCK_GROUPS } from "@/services/geo";
+import { MOCK_USERS_LIST, MOCK_CURRENT_USER } from "@/services/identity";
 
 // Mock de dados: Combinamos todos os usuários conhecidos para facilitar a busca
 // Isso substitui a MOCK_ALL_USERS antiga e incompleta.

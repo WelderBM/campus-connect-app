@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
-import { InstitutionalHubPage } from "./features/home/pages/InstitutionalHubPage";
+import { InstitutionalHubPage } from "./features/home/pages/index.tsx";
 import { FeedPage } from "./features/feed";
 import { GroupChatPage } from "./features/chat";
 import { GovernancePage } from "./features/governance/pages";

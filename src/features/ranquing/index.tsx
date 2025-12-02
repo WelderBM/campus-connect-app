@@ -1,10 +1,11 @@
 // src/features/profile/pages/RankingPage.tsx
 import React, { useEffect, useState } from "react";
-import { api, MOCK_USERS_LIST } from "@/services/mockData";
-import type { User } from "@/types";
 import { useAppContext } from "@/context/AppContext";
 import { RankingCard } from "../profile/components/RankingCard";
 import { Link } from "react-router-dom";
+import type { User } from "@/types/identity";
+import { api } from "@/services/dataApi";
+import { MOCK_USERS_LIST } from "@/services/identity";
 
 export const RankingPage: React.FC = () => {
   const { currentUser } = useAppContext();

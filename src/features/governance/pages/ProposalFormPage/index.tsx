@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppContext } from "@/context/AppContext";
-import { THEME_COLORS, type ThemeKey } from "@/types";
+import { THEME_COLORS, type ThemeKey } from "@/types/themes";
 
 export const ProposalFormPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser } = useAppContext();
 
   const geometry = location.state?.geometry;
 

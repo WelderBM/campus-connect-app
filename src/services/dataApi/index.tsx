@@ -10,12 +10,12 @@ import { getFactionsRanking } from "@/services/ranking";
 import type {
   Post,
   User,
-  HUD,
   Proposal,
   Group,
   Message,
   CourseRanking,
-} from "@/types";
+} from "@/types/identity";
+import type { HUD } from "@/types/geo";
 
 export const api = {
   getPosts: async (): Promise<Post[]> => {
