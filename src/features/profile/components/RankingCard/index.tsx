@@ -1,75 +1,34 @@
-// src/features/profile/components/RankingCard.tsx
 import React from "react";
-import type { User } from "@/types/identity";
+import { CardContainer } from "@/global/components/cardContainer";
 
 interface RankingCardProps {
-  user: User;
-  rank: number;
-  isCurrentUser: boolean;
+  title: string;
+  value: string;
+  icon: string;
+  isLoading: boolean;
 }
 
 export const RankingCard: React.FC<RankingCardProps> = ({
-  user,
-  rank,
-  isCurrentUser,
+  title,
+  value,
+  icon,
+  isLoading,
 }) => {
-  // Classes de cores para o Top 3
-  const rankColor =
-    rank === 1
-      ? "text-yellow-600"
-      : rank === 2
-      ? "text-gray-500"
-      : rank === 3
-      ? "text-yellow-800"
-      : "text-gray-400";
-
   return (
-    <div
-      className={`flex items-center p-3 rounded-xl transition-all border ${
-        isCurrentUser
-          ? "bg-blue-100/70 border-blue-400 shadow-lg"
-          : "bg-white border-gray-100"
-      }`}
-    >
-      {/* 1. RANK E MEDALHA */}
-      <div
-        className={`w-10 text-lg font-extrabold shrink-0 text-center ${rankColor}`}
-      >
-        {rank <= 3 ? (
-          <span className="text-xl">
-            {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
-          </span>
-        ) : (
-          <span className="text-gray-600">{rank}°</span>
-        )}
-      </div>
-
-      {/* 2. AVATAR & NOME */}
-      <div className="flex items-center flex-grow gap-3 ml-2">
-        <img
-          src={user.avatarUrl}
-          alt={user.name}
-          className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm shrink-0"
-        />
+    <CardContainer padding="large">
+      <div className="flex items-center space-x-4">
+        <div className="text-4xl">{icon}</div>
         <div>
-          <p
-            className={`font-bold text-gray-800 ${
-              isCurrentUser ? "text-blue-700" : ""
-            }`}
-          >
-            {user.name} {isCurrentUser && "(Você)"}
-          </p>
-          <p className="text-xs text-gray-500">
-            {user.role === "STUDENT" ? "🎓 Universitário" : "🎒 Aventureiro"}
-          </p>
+          <p className="text-sm text-gray-500 font-semibold">{title}</p>
+          <h3 className="text-3xl font-extrabold text-gray-900 mt-1">
+            {isLoading ? (
+              <span className="bg-gray-200 h-8 w-24 block rounded animate-pulse"></span>
+            ) : (
+              value
+            )}
+          </h3>
         </div>
       </div>
-
-      {/* 3. PONTOS */}
-      <div className="text-right shrink-0">
-        <p className="text-xl font-bold text-gray-900">{user.points}</p>
-        <p className="text-xs text-gray-400">XP</p>
-      </div>
-    </div>
+    </CardContainer>
   );
 };

@@ -1,5 +1,5 @@
-import { MOCK_COURSES, MOCK_USERS_LIST } from "../identity";
 import type { CourseRanking, User } from "@/types/identity";
+import { MOCK_COURSES, MOCK_USERS_LIST } from "../mocks/identity";
 
 interface AllUsersContext {
   users: User[];
