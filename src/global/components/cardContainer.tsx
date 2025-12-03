@@ -1,5 +1,3 @@
-import React from "react";
-
 interface CardContainerProps {
   children: React.ReactNode;
 

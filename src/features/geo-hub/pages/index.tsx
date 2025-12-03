@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 import { getThemeClasses } from "@/utils/themeHelpers";
 import PostCard from "@/features/feed/components/PostCard/index";
-import { MOCK_HUDS, MOCK_POSTS } from "@/services/geo";
+import { MOCK_HUDS, MOCK_POSTS } from "@/services/mocks/geo";
 
 export const HudPage: React.FC = () => {
   const { currentUser } = useAppContext();

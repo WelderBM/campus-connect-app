@@ -4,7 +4,7 @@ import { RankingCard } from "../profile/components/RankingCard";
 import { Link } from "react-router-dom";
 import type { User } from "@/types/identity";
 import { api } from "@/services/dataApi";
-import { MOCK_USERS_LIST } from "@/services/identity";
+import { MOCK_USERS_LIST } from "@/services/mocks/identity";
 
 export const RankingPage: React.FC = () => {
   const { currentUser } = useAppContext();

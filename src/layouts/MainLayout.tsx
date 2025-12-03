@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { universityFlag } from "@/global/components/universityFlag";
 import { PostInputBar } from "@/features/feed/components/PostImputBar";
 import { MapScaleToggle } from "@/features/geo-hub/components/MapTypeToggle";
-import { MOCK_UNIVERSITY } from "@/services/geo";
+import { MOCK_UNIVERSITY } from "@/services/mocks/geo";
 
 export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { currentUser } = useAppContext();

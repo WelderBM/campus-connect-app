@@ -1,5 +1,5 @@
-import type { CourseRanking, User } from "@/types/identity"; // Importação unificada a partir de /types/index (Corrigido para garantir todos os campos)
-import { MOCK_COURSES, MOCK_USERS_LIST } from "@/services/identity";
+import { MOCK_COURSES, MOCK_USERS_LIST } from "../identity";
+import type { CourseRanking, User } from "@/types/identity";
 
 interface AllUsersContext {
   users: User[];
@@ -29,9 +29,7 @@ const calculateWeightedXP = (
   return { course, totalXP, activeUsers, weightedScore };
 };
 
-export const getAlliancesRanking = (
-  realUser?: User | null
-): CourseRanking[] => {
+export const getFactionsRanking = (realUser?: User | null): CourseRanking[] => {
   let allUsers: User[] = [...MOCK_USERS_LIST];
 
   if (

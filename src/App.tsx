@@ -2,10 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { InstitutionalHubPage } from "./features/home/pages/index.tsx";
 import { FeedPage } from "./features/feed";
-import { GroupChatPage } from "./features/chat";
+import { ChatHubPage } from "./features/chat";
 import { GovernancePage } from "./features/governance/pages/index.tsx";
 import { ProfilePage } from "./features/profile";
-import { ChatHubPage } from "./features/chat/components/GroupChatPage";
 import { RankingPage } from "./features/ranquing";
 import { HudPage } from "./features/geo-hub/pages/index.tsx";
 import { MapHandler } from "./features/geo-hub/pages/mapHandler/index.tsx";
@@ -30,7 +29,7 @@ function App() {
           <Route path="/hud/:hudId" element={<HudPage />} />
 
           <Route path="/chat" element={<ChatHubPage />} />
-          <Route path="/chat/:groupId" element={<GroupChatPage />} />
+          <Route path="/chat/:groupId" element={<ChatHubPage />} />
 
           <Route path="/governance" element={<GovernancePage />} />
           <Route path="/governance/propose" element={<ProposalFormPage />} />

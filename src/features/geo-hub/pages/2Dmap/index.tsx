@@ -12,7 +12,7 @@ import {
   MOCK_HUDS,
   MOCK_UNIVERSITIES_LIST,
   MOCK_UNIVERSITY,
-} from "@/services/geo";
+} from "@/services/mocks/geo";
 import type { HUD, University } from "@/types/geo";
 import { getThemeColors } from "@/utils/themeHelpers";
 import L from "leaflet";

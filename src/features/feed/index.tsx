@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "@/context/AppContext";
 import FilterBar from "./components/FilterBar";
 import PostCard from "./components/PostCard";
-import type { Post } from "@/types/identity";
-import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
-import { PostInputBar } from "./components/PostImputBar";
-import { CardContainer } from "@/global/components/cardContainer";
 
-const universityFlag = (
-  <span role="img" aria-label="Brazil Flag">
-    🇧🇷
-  </span>
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
+import type { Post } from "@/types/identity";
+import { CardContainer } from "@/global/components/cardContainer";
+import { PostInputBar } from "./components/PostImputBar";
+
+declare const __app_id: string;
+declare const __firebase_config: string;
+
+const app = initializeApp(
+  JSON.parse(
+    typeof __firebase_config !== "undefined" ? __firebase_config : "{}"
+  )
 );
+const db = getFirestore(app);
 
 const LoadingSkeleton: React.FC = () => (
   <div className="space-y-4">
@@ -29,31 +42,65 @@ const LoadingSkeleton: React.FC = () => (
   </div>
 );
 
-const MOCK_POSTS: Post[] = [
-  {
-    id: "p1",
-    authorId: "user-0",
-    hudId: "hud-1",
-    content: "Primeiro post mockado!",
-    likes: 5,
-    isCurated: false,
-    createdAt: new Date().toISOString(),
-  } as Post,
-  {
-    id: "p2",
-    authorId: "user-1",
-    hudId: "hud-1",
-    content: "Post Curado Globalmente.",
-    likes: 100,
-    isCurated: true,
-    createdAt: new Date().toISOString(),
-  } as Post,
-];
-
 export const FeedPage: React.FC = () => {
   const { currentUser, filterLevel, isAuthReady } = useAppContext();
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!isAuthReady) {
+  useEffect(() => {
+    if (!isAuthReady || !currentUser) return;
+
+    const appId = typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+    const postsCollectionRef = collection(
+      db,
+      `artifacts/${appId}/public/data/posts`
+    );
+    let postsQuery;
+
+    if (filterLevel === "GLOBAL") {
+      postsQuery = query(
+        postsCollectionRef,
+        where("isCurated", "==", true),
+        orderBy("createdAt", "desc")
+      );
+    } else if (filterLevel === "INSTITUTION") {
+      postsQuery = query(
+        postsCollectionRef,
+        where("universityId", "==", currentUser.universityId),
+        orderBy("createdAt", "desc")
+      );
+    } else {
+      postsQuery = query(postsCollectionRef, orderBy("createdAt", "desc"));
+    }
+
+    setIsLoadingPosts(true);
+
+    const unsubscribe = onSnapshot(
+      postsQuery,
+      (snapshot) => {
+        const postsData = snapshot.docs.map(
+          (doc) =>
+            ({
+              id: doc.id,
+              ...doc.data(),
+            } as Post)
+        );
+
+        setFilteredPosts(postsData);
+        setIsLoadingPosts(false);
+        setError(null);
+      },
+      (e) => {
+        setError("Erro ao carregar feed em tempo real.");
+        setIsLoadingPosts(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [isAuthReady, currentUser, filterLevel]);
+
+  if (!isAuthReady || isLoadingPosts) {
     return (
       <div className="max-w-3xl mx-auto p-4">
         <h2 className="text-2xl font-bold mb-4">
@@ -67,33 +114,10 @@ export const FeedPage: React.FC = () => {
   if (!currentUser) {
     return (
       <div className="p-10 text-center text-xl text-red-600">
-        Acesso negado. Por favor, faça login novamente.
+        Acesso negado. Por favor, faça login.
       </div>
     );
   }
-
-  const USER_UNI_ID = currentUser.universityId;
-  const USER_COUNTRY_FLAG = MOCK_UNIVERSITY.countryFlag;
-
-  const filteredPosts = MOCK_POSTS.filter((post) => {
-    const postHud = MOCK_HUDS.find((h) => h.id === post.hudId);
-    if (!postHud) return false;
-
-    switch (filterLevel) {
-      case "GLOBAL":
-        // Filtro GLOBAL: Apenas posts curados (oficiais)
-        return post.isCurated;
-
-      case "NATIONAL":
-        return true;
-
-      case "INSTITUTION":
-        return postHud.universityId === USER_UNI_ID;
-
-      default:
-        return true;
-    }
-  });
 
   return (
     <CardContainer padding="none">
@@ -105,19 +129,17 @@ export const FeedPage: React.FC = () => {
       </div>
       <div>
         <div className="p-4 space-y-4">
-          {" "}
           {filteredPosts.map((post: Post) => {
-            const hud = MOCK_HUDS.find((h) => h.id === post.hudId);
-
             return (
               <PostCard
                 key={post.id}
                 post={post}
                 author={currentUser}
-                hud={hud!}
+                hud={post.hudId as any}
               />
             );
           })}
+
           {filteredPosts.length === 0 && (
             <p className="text-center text-gray-500 mt-10">
               Nenhum post encontrado no nível {filterLevel}.

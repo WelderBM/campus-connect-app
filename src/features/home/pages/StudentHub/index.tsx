@@ -1,20 +1,22 @@
 import { ActionButton } from "@/global/components/ActionButton";
 import { CardContainer } from "@/global/components/cardContainer";
 import { api } from "@/services/dataApi";
-import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
+import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/mocks/geo";
 import type { HUD } from "@/types/geo";
 import type { CourseRanking } from "@/types/identity";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "@/context/AppContext";
 
 export const StudentHub: React.FC = () => {
   const navigate = useNavigate();
   const [dominantAlliances, setDominantAlliances] = useState<CourseRanking[]>(
     []
   );
+  const { currentUser } = useAppContext();
 
   useEffect(() => {
-    api.getAlliancesRanking().then((data) => {
+    api.getFactionsRanking(currentUser).then((data) => {
       setDominantAlliances(data.slice(0, 3));
     });
   }, []);

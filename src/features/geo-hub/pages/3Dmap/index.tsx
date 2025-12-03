@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Globe from "react-globe.gl";
-import { MOCK_UNIVERSITIES_LIST, MOCK_UNIVERSITY } from "@/services/geo";
+import { MOCK_UNIVERSITIES_LIST, MOCK_UNIVERSITY } from "@/services/mocks/geo";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 
