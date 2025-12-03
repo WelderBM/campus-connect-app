@@ -3,286 +3,247 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useCallback,
+  useMemo,
 } from "react";
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import {
   getAuth,
-  signInAnonymously,
   signInWithCustomToken,
+  signInAnonymously,
   onAuthStateChanged,
+  type User as FirebaseUser,
   type Auth,
 } from "firebase/auth";
 import {
   getFirestore,
-  Firestore,
-  doc,
-  getDoc,
-  setDoc,
+  onSnapshot,
   collection,
-  getDocs,
-  setLogLevel,
+  query,
+  where,
+  Firestore,
 } from "firebase/firestore";
-import { isWithinRadius, isWithinPolygon } from "@/utils/geoUtils";
-import type { Course, User } from "@/types";
-import type { Coordinates, HUD, University } from "@/types";
+
+// Importações Mockadas
+import {
+  MOCK_USERS_LIST,
+  MOCK_UNIVERSITY,
+  MOCK_COURSES,
+} from "@/services/mocks/identity";
+import { MOCK_HUDS } from "@/services/mocks/geo";
+// Tipos
+import type { User, University, Course, HUD, UserRole } from "@/types";
 
 declare const __app_id: string;
 declare const __firebase_config: string;
 declare const __initial_auth_token: string;
 
-type FilterLevel = "GLOBAL" | "NATIONAL" | "INSTITUTION";
-type LocationStatus = "OUTSIDE" | "VIRTUAL" | "PRESENCIAL";
-
-let dbInstance: Firestore | null = null;
-let authInstance: Auth | null = null;
-let appInstance: FirebaseApp | null = null;
-
 interface AppContextType {
   currentUser: User | null;
-  isAuthReady: boolean;
-  filterLevel: FilterLevel;
-  setFilterLevel: (level: FilterLevel) => void;
-  hudsList: HUD[];
-  universityData: University | null;
-  actualPosition: Coordinates | null;
-  currentUniversityId: string | null;
   currentHubId: string | null;
-  locationStatus: LocationStatus;
-  updateUserPosition: (position: Coordinates) => void;
-  signInMockUser: (role: "STUDENT" | "ADVENTURER") => Promise<void>;
+  locationStatus: "PRESENCIAL" | "FORA_DO_CAMPUS";
+  isAuthReady: boolean;
+  universityData: University;
+  courseData: Course[];
+  hudsList: HUD[];
+  filterLevel: "GLOBAL" | "NATIONAL" | "INSTITUTION";
+  setFilterLevel: (level: "GLOBAL" | "NATIONAL" | "INSTITUTION") => void;
+  // Nova função para mudar o contexto da Universidade
+  setAppContextUniversity: (university: University) => void;
+  signInMockUser: (role: UserRole) => Promise<void>;
+  db: Firestore | null;
+  auth: Auth | null;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-const initializeFirebase = () => {
-  try {
-    const firebaseConfig = JSON.parse(
-      typeof __firebase_config !== "undefined" ? __firebase_config : "{}"
-    );
-    if (!appInstance) {
-      appInstance = initializeApp(firebaseConfig);
-      dbInstance = getFirestore(appInstance);
-      authInstance = getAuth(appInstance);
-      setLogLevel("debug");
-    }
-  } catch (error) {
-    console.error("Falha ao inicializar o Firebase.", error);
-  }
+const defaultContext: AppContextType = {
+  currentUser: null,
+  currentHubId: "hud-1",
+  locationStatus: "FORA_DO_CAMPUS",
+  isAuthReady: false,
+  universityData: MOCK_UNIVERSITY,
+  courseData: MOCK_COURSES,
+  hudsList: MOCK_HUDS,
+  filterLevel: "INSTITUTION",
+  setFilterLevel: () => {},
+  setAppContextUniversity: () => {}, // Default vazio
+  signInMockUser: async () => {},
+  db: null,
+  auth: null,
 };
 
-const getPath = (collectionName: string, docId?: string) => {
-  const appId = typeof __app_id !== "undefined" ? __app_id : "default-app-id";
-  let path = `artifacts/${appId}/public/data/${collectionName}`;
-  if (docId) {
-    path += `/${docId}`;
-  }
-  return path;
-};
+const AppContext = createContext<AppContextType>(defaultContext);
 
-const MOCK_COURSES: Course[] = [
-  {
-    id: "course-1",
-    name: "Direito",
-    shortName: "DIREITO",
-    colorHex: "#E63946",
-    universityId: "uni-1",
-  },
-  {
-    id: "course-2",
-    name: "Engenharia Civil",
-    shortName: "ENGENHARIA",
-    colorHex: "#457B9D",
-    universityId: "uni-1",
-  },
-];
+export const useAppContext = () => useContext(AppContext);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  initializeFirebase();
+  const [firebaseApp, setFirebaseApp] = useState<FirebaseApp | null>(null);
+  const [authInstance, setAuthInstance] = useState<Auth | null>(null);
+  const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
 
+  // Dados globais e contexto de visualização
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
-  const [filterLevel, setFilterLevelState] = useState<FilterLevel>(
-    () =>
-      (localStorage.getItem("appFilterLevel") as FilterLevel) || "INSTITUTION"
+  const [currentHubId, setCurrentHubId] = useState<string | null>(
+    defaultContext.currentHubId
   );
+  const [locationStatus, setLocationStatus] = useState<
+    "PRESENCIAL" | "FORA_DO_CAMPUS"
+  >("FORA_DO_CAMPUS");
+  const [filterLevel, setFilterLevel] = useState<
+    "GLOBAL" | "NATIONAL" | "INSTITUTION"
+  >("INSTITUTION");
 
-  const [hudsList, setHudsList] = useState<HUD[]>([]);
-  const [universityData, setUniversityData] = useState<University | null>(null);
+  // Estado da Universidade Ativa (pode ser diferente da universidade do usuário logado)
+  const [activeUniversity, setActiveUniversity] =
+    useState<University>(MOCK_UNIVERSITY);
+  // Lista de HUDs da Universidade Ativa
+  const [activeHuds, setActiveHuds] = useState<HUD[]>(MOCK_HUDS);
 
-  const [actualPosition, setActualPosition] = useState<Coordinates | null>(
-    null
-  );
-  const [currentUniversityId, setCurrentUniversityId] = useState<string | null>(
-    null
-  );
-  const [currentHubId, setCurrentHubId] = useState<string | null>(null);
-  const [locationStatus, setLocationStatus] =
-    useState<LocationStatus>("OUTSIDE");
+  // --- FUNÇÃO CENTRAL PARA MUDANÇA DE CONTEXTO ---
+  const setAppContextUniversity = (university: University) => {
+    // 1. Mudar a Universidade Ativa e a lista de HUDs
+    setActiveUniversity(university);
+    // Simulação: buscar HUDs correspondentes a essa universidade (usando mock por agora)
+    const newHuds = MOCK_HUDS.filter((h) => h.universityId === university.id);
+    setActiveHuds(newHuds.length > 0 ? newHuds : MOCK_HUDS); // Garante que não fique vazio
 
-  const setFilterLevel = useCallback((level: FilterLevel) => {
-    setFilterLevelState(level);
-    localStorage.setItem("appFilterLevel", level);
-  }, []);
+    // 2. Determinar a nova Role do Usuário Ativo
+    if (currentUser) {
+      let newRole: UserRole;
 
-  const fetchOrCreateUserProfile = useCallback(async (uid: string) => {
-    if (!dbInstance) return null;
+      if (currentUser.universityId === university.id) {
+        // Se a universidade clicada é a do usuário: Modo Estudante
+        newRole = "STUDENT";
+        setLocationStatus("PRESENCIAL");
+      } else {
+        // Se a universidade clicada é outra: Modo Aventureiro
+        newRole = "ADVENTURER";
+        setLocationStatus("FORA_DO_CAMPUS");
+      }
 
-    const userRef = doc(dbInstance, `artifacts/${uid}/profile/data`);
-    const userSnap = await getDoc(userRef);
-
-    if (userSnap.exists()) {
-      return userSnap.data() as User;
+      // Atualiza o currentUser com a nova role no contexto
+      setCurrentUser((prev) => (prev ? { ...prev, role: newRole } : null));
     } else {
-      const newUserProfile: User = {
-        id: uid,
-        name: "Novo Estudante",
-        role: "STUDENT",
-        universityId: "uni-1",
-        courseId: MOCK_COURSES[1].id,
-        isModerator: false,
-        points: 100,
-        avatarUrl: `https://placehold.co/100x100/A8DADC/1D3557?text=${uid.slice(
-          0,
-          4
-        )}`,
-      };
-      await setDoc(userRef, newUserProfile, { merge: true });
-      return newUserProfile;
+      // Se não há usuário logado, garante o modo Aventureiro na universidade.
+      setLocationStatus("FORA_DO_CAMPUS");
+      // Neste cenário, o usuário é anônimo/aventureiro, mas o app está focado na 'activeUniversity'
     }
-  }, []);
 
-  const fetchStaticData = useCallback(async () => {
-    if (!dbInstance) return;
+    // 3. Voltar para a visualização Institucional (2D Map)
+    setFilterLevel("INSTITUTION");
+  };
+  // ---------------------------------------------
 
-    const hudsRef = collection(dbInstance, getPath("huds"));
-    const hudsSnapshot = await getDocs(hudsRef);
-    const huds = hudsSnapshot.docs.map(
-      (doc) => ({ id: doc.id, ...doc.data() } as HUD)
-    );
-    setHudsList(huds);
-
-    const uniRef = doc(dbInstance, getPath("universities"), "uni-1");
-    const uniSnapshot = await getDoc(uniRef);
-    if (uniSnapshot.exists()) {
-      setUniversityData({
-        id: uniSnapshot.id,
-        ...uniSnapshot.data(),
-      } as University);
-    } else {
-      console.error(
-        "Dados da Universidade 'uni-1' não encontrados no Firestore."
-      );
-    }
-  }, []);
-
+  // 1. Inicialização do Firebase e Autenticação
   useEffect(() => {
-    if (!authInstance) return;
+    try {
+      const firebaseConfig = JSON.parse(
+        typeof __firebase_config !== "undefined" ? __firebase_config : "{}"
+      );
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
 
-    fetchStaticData();
+      setFirebaseApp(app);
+      setAuthInstance(auth);
+      setDbInstance(db);
 
-    const unsubscribe = onAuthStateChanged(
-      authInstance,
-      async (firebaseUser) => {
-        if (firebaseUser) {
-          const profile = await fetchOrCreateUserProfile(firebaseUser.uid);
-          setCurrentUser(profile);
+      const handleAuth = async (user: FirebaseUser | null) => {
+        if (user) {
+          // Em um app real, buscaríamos os dados do usuário no Firestore/RealtimeDB
+          const mockUser =
+            MOCK_USERS_LIST.find((u) => u.id === user.uid) ||
+            MOCK_USERS_LIST[0];
+          // NOTA: A role inicial é a do mock, que pode ser sobrescrita por setAppContextUniversity
+          setCurrentUser({ ...mockUser, id: user.uid });
+
+          // Define a universidade inicial como a do usuário logado
+          const initialUni = MOCK_UNIVERSITY;
+          setActiveUniversity(initialUni);
+          setActiveHuds(
+            MOCK_HUDS.filter((h) => h.universityId === initialUni.id)
+          );
         } else {
           setCurrentUser(null);
+          // Permanece na universidade mockada como padrão para usuários anônimos
         }
         setIsAuthReady(true);
-      }
-    );
+      };
 
-    const initializeAuth = async () => {
-      try {
+      const unsubscribeAuth = onAuthStateChanged(auth, handleAuth);
+
+      const attemptSignIn = async () => {
         if (
-          authInstance &&
           typeof __initial_auth_token !== "undefined" &&
           __initial_auth_token
         ) {
-          await signInWithCustomToken(authInstance, __initial_auth_token);
-        } else if (authInstance) {
-          await signInAnonymously(authInstance);
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
         }
-      } catch (error) {
-        await signInAnonymously(authInstance!);
-      }
-    };
+      };
 
-    initializeAuth();
-    return () => unsubscribe();
-  }, [fetchOrCreateUserProfile, fetchStaticData]);
+      attemptSignIn();
 
-  const updateUserPosition = useCallback(
-    (position: Coordinates) => {
-      setActualPosition(position);
+      return () => unsubscribeAuth();
+    } catch (e) {
+      console.error("Erro na inicialização ou autenticação do Firebase:", e);
+      setIsAuthReady(true);
+    }
+  }, []);
 
-      if (!universityData) {
-        return;
-      }
-
-      const uniRadius = universityData.proximityRadiusKm;
-      const uniCenter = universityData.centerCoordinates;
-
-      const isPresential = isWithinRadius(position, uniCenter, uniRadius);
-
-      if (isPresential) {
-        setCurrentUniversityId(universityData.id);
-        setLocationStatus("PRESENCIAL");
-
-        const activeHub = hudsList.find((hud) =>
-          isWithinPolygon(position, hud.polygonCoordinates)
-        );
-        setCurrentHubId(activeHub?.id || null);
-      } else {
-        setCurrentUniversityId(null);
-        setCurrentHubId(null);
-        setLocationStatus("OUTSIDE");
-      }
-    },
-    [universityData, hudsList]
-  );
-
-  const signInMockUser = useCallback(
-    async (role: "STUDENT" | "ADVENTURER") => {
-      if (authInstance) {
-        const tempUser = authInstance.currentUser;
-        if (tempUser) {
-          const profile = await fetchOrCreateUserProfile(tempUser.uid);
-          if (profile) {
-            setCurrentUser({ ...profile, role: role });
-          }
-        }
-      }
-    },
-    [fetchOrCreateUserProfile]
-  );
-
-  const value = {
-    currentUser,
-    isAuthReady,
-    filterLevel,
-    setFilterLevel,
-    hudsList,
-    universityData,
-    actualPosition,
-    currentUniversityId,
-    currentHubId,
-    locationStatus,
-    updateUserPosition,
-    signInMockUser,
+  // 2. Mock de login para o AdventurerLanding
+  const signInMockUser = async (role: UserRole) => {
+    if (authInstance) {
+      // Cria um usuário temporário no mock list se for estudante
+      const mockUser =
+        role === "STUDENT" ? MOCK_USERS_LIST[0] : MOCK_USERS_LIST[1];
+      setCurrentUser({ ...mockUser, role });
+      setLocationStatus(role === "STUDENT" ? "PRESENCIAL" : "FORA_DO_CAMPUS");
+    }
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-};
+  // 3. Simulação de mudança de HUD baseado na localização (opcional)
+  useEffect(() => {
+    if (locationStatus === "PRESENCIAL" && activeHuds.length > 0) {
+      setCurrentHubId(activeHuds[0].id); // Entrou no primeiro HUD
+    } else {
+      setCurrentHubId(null); // Saiu de qualquer HUD específico
+    }
+  }, [locationStatus, activeHuds]);
 
-export const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
-  }
-  return context;
+  // 4. Exposição do Contexto
+  const contextValue = useMemo(
+    () => ({
+      currentUser,
+      currentHubId,
+      locationStatus,
+      isAuthReady,
+      universityData: activeUniversity, // Usa a universidade ativa
+      courseData: defaultContext.courseData,
+      hudsList: activeHuds, // Usa a lista de HUDs ativa
+      filterLevel,
+      setFilterLevel,
+      setAppContextUniversity, // Nova função
+      signInMockUser,
+      db: dbInstance,
+      auth: authInstance,
+    }),
+    [
+      currentUser,
+      currentHubId,
+      locationStatus,
+      isAuthReady,
+      filterLevel,
+      dbInstance,
+      authInstance,
+      activeUniversity, // Adicionado
+      activeHuds, // Adicionado
+    ]
+  );
+
+  return (
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+  );
 };
