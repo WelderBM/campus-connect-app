@@ -13,7 +13,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import type { Post } from "@/types/identity";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 import { PostInputBar } from "./components/PostImputBar";
 
 declare const __app_id: string;

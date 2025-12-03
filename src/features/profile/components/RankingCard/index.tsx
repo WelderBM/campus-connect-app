@@ -1,5 +1,5 @@
 import React from "react";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 
 interface RankingCardProps {
   title: string;

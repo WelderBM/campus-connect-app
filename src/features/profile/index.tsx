@@ -3,7 +3,7 @@ import { useAppContext } from "@/context/AppContext";
 import { api } from "@/services/dataApi";
 import type { User } from "@/types/identity";
 import { RankingCard } from "./components/RankingCard";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 
 export const ProfilePage: React.FC = () => {
   const { currentUser, isAuthReady, universityData, locationStatus } =

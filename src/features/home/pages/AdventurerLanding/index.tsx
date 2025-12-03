@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 import { ActionButton } from "@/global/components/ActionButton";
 
 interface AdventurerLandingProps {

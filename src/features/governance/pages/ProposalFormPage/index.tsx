@@ -1,124 +1,85 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { THEME_COLORS, type ThemeKey } from "@/types/themes";
+import React from "react";
+import { ActionButton } from "@/global/components/ActionButton";
+import { getThemeClasses } from "@/utils/themeHelpers";
+import type { Proposal } from "@/types/identity";
+import { CardContainer } from "@/global/components/CardContainer";
 
-export const ProposalFormPage: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+interface ProposalCardProps {
+  proposal: Proposal;
+}
 
-  const geometry = location.state?.geometry;
+const getExpirationText = (expiresAt: string) => {
+  const diff = new Date(expiresAt).getTime() - Date.now();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  if (days > 0) return `Votação expira em ${days} dia(s)`;
+  if (diff > 0) return "Expirando hoje";
+  return "Expirada";
+};
 
-  if (!geometry) {
-    setTimeout(() => navigate("/map"), 0);
-    return null;
-  }
+export const ProposalCard: React.FC<ProposalCardProps> = ({ proposal }) => {
+  const theme = getThemeClasses(proposal.targetCategory || "GENERAL");
+  const expirationText = getExpirationText(proposal.expiresAt);
+  const totalVotes = proposal.votesFor + proposal.votesAgainst;
+  const supportPercentage =
+    totalVotes > 0 ? Math.round((proposal.votesFor / totalVotes) * 100) : 0;
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<ThemeKey>("ACADEMIC");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    setTimeout(() => {
-      alert(
-        "🎉 Proposta enviada com sucesso!\n\nA comunidade agora poderá votar para aprovar este novo HUD."
-      );
-      navigate("/governance");
-    }, 1500);
-  };
+  const proposalTypeLabel =
+    proposal.type === "NEW_HUD" ? "Novo Local (HUD)" : "Nova Regra";
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="bg-white p-4 shadow-sm border-b border-gray-200 sticky top-0 z-10">
-        <button
-          onClick={() => navigate("/map")}
-          className="text-sm text-gray-500 hover:text-gray-800 mb-1"
+    <CardContainer padding="large" className="space-y-4">
+      <div className="flex justify-between items-start">
+        <h3 className="text-xl font-bold text-gray-900 leading-snug">
+          {proposal.title}
+        </h3>
+        <span
+          className={`text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap ${theme.tagBg} ${theme.text}`}
         >
-          ← Cancelar e Voltar
-        </button>
-        <h1 className="text-xl font-bold text-gray-900">Propor Novo Espaço</h1>
-        <p className="text-xs text-gray-500">
-          Defina os detalhes da área que você mapeou.
-        </p>
+          {proposal.targetCategory.toUpperCase()}
+        </span>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-4 space-y-6 max-w-lg mx-auto">
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-          <p className="text-xs font-bold text-blue-800 uppercase tracking-wide mb-1">
-            Geometria Capturada
+      <div className="text-sm text-gray-600">
+        <p className="mb-2">{proposal.description}</p>
+        <p className="font-semibold">{proposalTypeLabel}</p>
+      </div>
+
+      <div className="border-t pt-4">
+        <div className="flex justify-between items-center mb-2">
+          <p
+            className={`text-xs font-bold ${
+              expirationText === "Expirada" ? "text-red-600" : "text-orange-600"
+            }`}
+          >
+            {expirationText}
           </p>
-          <p className="text-sm text-blue-900">
-            Polígono com {geometry.length} pontos de definição.
-          </p>
-          <p className="text-[10px] text-blue-600 mt-1 truncate">
-            {JSON.stringify(geometry[0])}...
+          <p className="text-sm font-semibold text-gray-700">
+            {supportPercentage}% Sim
           </p>
         </div>
 
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">
-            Nome do Local
-          </label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Ex: Praça do Relógio, Bloco IV..."
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-            required
+        <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+          <div
+            className="bg-green-500 h-2.5 rounded-full"
+            style={{ width: `${supportPercentage}%` }}
+          ></div>
+        </div>
+
+        <div className="flex justify-between space-x-3">
+          <ActionButton
+            onClick={() => console.log(`Votou Sim na proposta ${proposal.id}`)}
+            text={`Aprovar (${proposal.votesFor})`}
+            variant="success"
+            className="flex-1 py-2 text-sm"
+          />
+          <ActionButton
+            onClick={() => console.log(`Votou Não na proposta ${proposal.id}`)}
+            text={`Rejeitar (${proposal.votesAgainst})`}
+            variant="danger"
+            className="flex-1 py-2 text-sm"
           />
         </div>
-
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">
-            Categoria Principal
-          </label>
-          <div className="grid grid-cols-3 gap-2">
-            {(Object.keys(THEME_COLORS) as ThemeKey[]).map((key) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setCategory(key)}
-                className={`p-3 rounded-lg text-xs font-bold border-2 transition-all ${
-                  category === key
-                    ? "border-blue-600 bg-blue-50 text-blue-700 shadow-sm"
-                    : "border-gray-200 bg-white text-gray-500 hover:border-gray-300"
-                }`}
-              >
-                {THEME_COLORS[key].label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-2">
-            Descrição & Justificativa
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Descreva o que acontece neste local e por que ele deve ser um HUD oficial..."
-            className="w-full p-3 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`w-full py-4 rounded-xl font-bold text-white shadow-lg text-lg transition-all active:scale-95 ${
-            isSubmitting
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700"
-          }`}
-        >
-          {isSubmitting ? "Enviando Proposta..." : "🚀 Submeter para Votação"}
-        </button>
-      </form>
-    </div>
+      </div>
+    </CardContainer>
   );
 };

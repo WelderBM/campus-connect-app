@@ -1,5 +1,5 @@
 import { ActionButton } from "@/global/components/ActionButton";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 import { api } from "@/services/dataApi";
 import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/mocks/geo";
 import type { HUD } from "@/types/geo";

@@ -11,7 +11,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import type { Group } from "@/types/identity";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 
 declare const __app_id: string;
 declare const __firebase_config: string;

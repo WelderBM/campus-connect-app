@@ -1,55 +1,41 @@
+import React from "react";
 import { useAppContext } from "@/context/AppContext";
-import { universityFlag } from "@/global/components/universityFlag";
-import type { JSX } from "react";
 
-export default function FilterBar() {
-  const { filterLevel, setFilterLevel, currentUser } = useAppContext();
+export const FilterBar: React.FC = () => {
+  const { filterLevel, setFilterLevel } = useAppContext();
 
-  const filters: {
-    level: "GLOBAL" | "NATIONAL" | "INSTITUTION";
-    icon: JSX.Element | string;
-    label: string;
-  }[] = [
-    { level: "GLOBAL", label: "Global", icon: "🌎" },
-    { level: "NATIONAL", label: "Nacional", icon: universityFlag },
-    { level: "INSTITUTION", label: "Minha Instituição", icon: "🏛️" },
-  ];
-
-  const handleFilterClick = (level: "GLOBAL" | "NATIONAL" | "INSTITUTION") => {
-    if (currentUser?.role === "ADVENTURER" && level !== "GLOBAL") {
-      alert(
-        "Acesso restrito. Conteúdo Nacional/Institucional disponível apenas para Universitários verificados."
-      );
-      return;
-    }
-    setFilterLevel(level);
+  const getButtonClass = (level: string) => {
+    return filterLevel === level
+      ? "bg-blue-600 text-white shadow-md"
+      : "bg-gray-200 text-gray-700 hover:bg-gray-300";
   };
 
   return (
-    <div className="flex justify-start px-1 mb-4">
-      <div className="flex gap-2 p-1 bg-gray-100 rounded-full shadow-inner">
-        {filters.map((filter) => (
-          <button
-            key={filter.level}
-            onClick={() => handleFilterClick(filter.level)}
-            className={`
-              // Adicionado items-center para alinhamento vertical
-              flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200 shrink-0
-              ${
-                filterLevel === filter.level
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "text-gray-700 hover:bg-gray-200"
-              }
-            `}
-          >
-            <span className="flex items-center justify-center h-5 w-5 text-xl shrink-0">
-              {filter.icon}
-            </span>
-
-            <span className="shrink-0">{filter.label}</span>
-          </button>
-        ))}
-      </div>
+    <div className="flex space-x-2 p-1 bg-gray-100 rounded-xl">
+      <button
+        onClick={() => setFilterLevel("GLOBAL")}
+        className={`flex-1 py-2 px-3 text-sm font-semibold rounded-lg transition-colors ${getButtonClass(
+          "GLOBAL"
+        )}`}
+      >
+        Mundo 🌍
+      </button>
+      <button
+        onClick={() => setFilterLevel("NATIONAL")}
+        className={`flex-1 py-2 px-3 text-sm font-semibold rounded-lg transition-colors ${getButtonClass(
+          "NATIONAL"
+        )}`}
+      >
+        Nacional 🇧🇷
+      </button>
+      <button
+        onClick={() => setFilterLevel("INSTITUTION")}
+        className={`flex-1 py-2 px-3 text-sm font-semibold rounded-lg transition-colors ${getButtonClass(
+          "INSTITUTION"
+        )}`}
+      >
+        Campus 🏫
+      </button>
     </div>
   );
-}
+};

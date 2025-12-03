@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 import { ActionButton } from "@/global/components/ActionButton";
-import { CardContainer } from "@/global/components/cardContainer";
+import { CardContainer } from "@/global/components/CardContainer";
 
 const NavigationButton: React.FC<{
   to: string;

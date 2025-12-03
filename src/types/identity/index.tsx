@@ -36,7 +36,7 @@ export interface Post {
   imageUrl?: string;
   likes: number;
   isCurated: boolean;
-  createdAt: string;
+  createdAt: number;
 }
 
 export interface Group {

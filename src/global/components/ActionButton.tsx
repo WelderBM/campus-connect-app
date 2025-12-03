@@ -11,6 +11,7 @@ interface ActionButtonProps {
   isDisabled?: boolean;
 
   className?: string;
+  type?: "button" | "submit" | "reset";
 }
 
 const getButtonClasses = (
@@ -48,6 +49,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   isFullWidth = true,
   isDisabled = false,
   className = "",
+  type = "button",
 }) => {
   const finalClasses = getButtonClasses(variant, isFullWidth, isDisabled);
 
@@ -56,6 +58,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
       onClick={onClick}
       disabled={isDisabled}
       className={`${finalClasses} ${className}`}
+      type={type}
     >
       {emoji && <span className="text-xl">{emoji}</span>}
       {text}

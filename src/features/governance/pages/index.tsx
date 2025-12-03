@@ -1,86 +1,150 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProposalCard } from "../components/ProposalCard";
-import { CardContainer } from "@/global/components/cardContainer";
 import { ActionButton } from "@/global/components/ActionButton";
-import type { Proposal } from "@/types/identity";
+import { THEME_COLORS, type ThemeKey } from "@/types/themes";
+import { CardContainer } from "@/global/components/CardContainer";
 
-const MOCK_PROPOSALS: Proposal[] = [
-  {
-    id: "prop-1",
-    authorId: "user-3",
-    type: "NEW_HUD",
-    title: "Proposta: Novo Hub de Estudos na Biblioteca Central",
-    description:
-      "Criação de uma área silenciosa e tecnológica com carregadores USB e monitores grandes no segundo andar da biblioteca.",
-    targetCategory: "ACADEMIC",
-    votesFor: 150,
-    votesAgainst: 20,
-    expiresAt: new Date(Date.now() + 86400000 * 3).toISOString(),
-    createdAt: Date.now() - 86400000,
-  },
-  {
-    id: "prop-2",
-    authorId: "user-1",
-    type: "NEW_RULE",
-    title: "Regra: Horário Estendido para Laboratórios de Engenharia",
-    description:
-      "Permitir o uso dos laboratórios de Engenharia até as 23h, mediante agendamento e supervisão de moderador.",
-    targetCategory: "ACADEMIC",
-    votesFor: 80,
-    votesAgainst: 5,
-    expiresAt: new Date(Date.now() + 86400000 * 7).toISOString(),
-    createdAt: Date.now() - 86400000 * 2,
-  },
-];
-
-export const GovernancePage: React.FC = () => {
+export const ProposalFormPage: React.FC = () => {
   const navigate = useNavigate();
-  const [proposals, setProposals] = useState<Proposal[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [proposalType, setProposalType] = useState<"NEW_HUD" | "NEW_RULE">(
+    "NEW_HUD"
+  );
+  const [targetCategory, setTargetCategory] = useState<ThemeKey>("GENERAL");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    // NOTE: Em produção, isso seria um listener onSnapshot do Firestore
-    // Collection: artifacts/{appId}/public/data/proposals
-    setProposals(MOCK_PROPOSALS);
-    setIsLoading(false);
-  }, []);
+  const themeKeys: ThemeKey[] = Object.keys(THEME_COLORS) as ThemeKey[];
 
-  if (isLoading) {
-    return (
-      <div className="p-10 text-center text-gray-500 font-bold">
-        Carregando Propostas...
-      </div>
-    );
-  }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const newProposal = {
+      title,
+      description,
+      type: proposalType,
+      targetCategory,
+    };
+
+    console.log("Proposta Enviada:", newProposal);
+
+    setTimeout(() => {
+      alert("Proposta enviada com sucesso para votação!");
+      setIsSubmitting(false);
+      navigate("/governance");
+    }, 1500);
+  };
 
   return (
     <div className="p-4 space-y-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-extrabold text-gray-900">
-        Governança DAO do Campus
+        Criar Nova Proposta
       </h1>
       <p className="text-gray-600">
-        Vote nas propostas para moldar o ambiente físico e digital da sua
-        universidade.
+        Use a DAO para sugerir novos HUDs (locais) ou regras para a comunidade.
       </p>
 
-      <ActionButton
-        onClick={() => navigate("/governance/new")}
-        text="Propor Novo HUD ou Regra"
-        emoji="📝"
-        variant="primary"
-        isFullWidth={true}
-      />
-
       <CardContainer padding="large">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">
-          Propostas Ativas ({proposals.length})
-        </h2>
-        <div className="space-y-4">
-          {proposals.map((proposal) => (
-            <ProposalCard key={proposal.id} proposal={proposal} />
-          ))}
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-2">
+              Tipo de Proposta
+            </label>
+            <div className="flex space-x-4">
+              <label className="flex items-center text-sm font-medium text-gray-800">
+                <input
+                  type="radio"
+                  name="proposalType"
+                  value="NEW_HUD"
+                  checked={proposalType === "NEW_HUD"}
+                  onChange={() => setProposalType("NEW_HUD")}
+                  className="mr-2 text-blue-600"
+                />
+                Novo HUD (Local)
+              </label>
+              <label className="flex items-center text-sm font-medium text-gray-800">
+                <input
+                  type="radio"
+                  name="proposalType"
+                  value="NEW_RULE"
+                  checked={proposalType === "NEW_RULE"}
+                  onChange={() => setProposalType("NEW_RULE")}
+                  className="mr-2 text-blue-600"
+                />
+                Nova Regra Comunitária
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-bold text-gray-700 mb-2"
+            >
+              Título da Proposta (Máximo 80 caracteres)
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={80}
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-sm font-bold text-gray-700 mb-2"
+            >
+              Descrição Detalhada
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={5}
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="category"
+              className="block text-sm font-bold text-gray-700 mb-2"
+            >
+              Categoria Relacionada (Tema)
+            </label>
+            <select
+              id="category"
+              value={targetCategory}
+              onChange={(e) => setTargetCategory(e.target.value as ThemeKey)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+              required
+            >
+              {themeKeys.map((key) => (
+                <option key={key} value={key}>
+                  {THEME_COLORS[key].label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <ActionButton
+            onClick={() => {}}
+            type="submit"
+            text={isSubmitting ? "Enviando..." : "Enviar para Votação"}
+            emoji="🚀"
+            variant="primary"
+            isFullWidth={true}
+            className="mt-6"
+            isDisabled={isSubmitting}
+          />
+        </form>
       </CardContainer>
     </div>
   );
