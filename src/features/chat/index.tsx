@@ -1,69 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
-import type { Group, Message, User } from "@/types/identity";
+import type {
+  Group,
+  Message,
+  MessageBubbleProps,
+  User,
+} from "@/types/identity";
+import { api } from "@/services/dataApi";
 import { MOCK_GROUPS } from "@/services/geo";
-import { MOCK_USERS_LIST, MOCK_CURRENT_USER } from "@/services/identity";
-
-const MOCK_ALL_USERS_MOCK = [...MOCK_USERS_LIST, MOCK_CURRENT_USER];
-
-const MOCK_MESSAGES: Message[] = [
-  {
-    id: "msg-1",
-    groupId: "group-1",
-    authorId: "user-0",
-    content:
-      "Bom dia! Alguém na Biblioteca central? Precisava de ajuda com o trabalho de IA.",
-    timestamp: Date.now() - 3600000,
-  },
-  {
-    id: "msg-2",
-    groupId: "group-1",
-    authorId: "user-1",
-    content: "Sim, estou no Bloco IV. Quer que eu veja um material para você?",
-    timestamp: Date.now() - 3500000,
-  },
-  {
-    id: "msg-3",
-    groupId: "group-1",
-    authorId: "user-0",
-    content: "Sim, por favor! Obrigado!",
-    timestamp: Date.now() - 3400000,
-  },
-  {
-    id: "msg-4",
-    groupId: "group-2",
-    authorId: "user-2",
-    content: "Treino de vôlei cancelado hoje devido à chuva. Avisem a galera!",
-    timestamp: Date.now() - 1200000,
-  },
-  {
-    id: "msg-5",
-    groupId: "group-2",
-    authorId: "user-0",
-    content: "Certo, aviso o pessoal do Ginásio!",
-    timestamp: Date.now() - 600000,
-  },
-  {
-    id: "msg-6",
-    groupId: "group-1",
-    authorId: "user-1",
-    content: "De nada, Welder!",
-    timestamp: Date.now() - 10000,
-  },
-];
-const api = {
-  getMessagesByGroup: (groupId: string): Promise<Message[]> => {
-    const filtered = MOCK_MESSAGES.filter((m) => m.groupId === groupId);
-    return Promise.resolve(filtered);
-  },
-};
-
-interface MessageBubbleProps {
-  message: Message;
-  isCurrentUser: boolean;
-  author: User;
-}
+import { MOCK_USERS_LIST } from "@/services/identity";
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({
   message,
@@ -99,7 +45,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         <p className="text-sm">{message.content}</p>
         <span
           className={`text-[10px] absolute ${
-            isCurrentUser ? "bottom-1 right-3" : "bottom-1 left-3" // Posição ajustada para melhor UX
+            isCurrentUser ? "bottom-1 right-3" : "bottom-1 left-3"
           } text-gray-400 opacity-80`}
         >
           {new Date(message.timestamp).toLocaleTimeString([], {
@@ -121,12 +67,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
 export const GroupChatPage: React.FC = () => {
   const { groupId } = useParams<{ groupId: string }>();
-  const { currentUser } = useAppContext();
-  const chatContainerRef = useRef<HTMLDivElement>(null); // Referência para o Scroll
+  const { currentUser, isAuthReady } = useAppContext();
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const group: Group | undefined = MOCK_GROUPS.find((g) => g.id === groupId);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const MOCK_ALL_USERS_WITH_REAL = MOCK_USERS_LIST.filter(
+    (u) => u.id !== currentUser?.id
+  );
+  const allUsers = currentUser
+    ? [currentUser, ...MOCK_ALL_USERS_WITH_REAL]
+    : MOCK_ALL_USERS_WITH_REAL;
 
   useEffect(() => {
     if (!groupId) return;
@@ -145,11 +98,11 @@ export const GroupChatPage: React.FC = () => {
     }
   }, [messages]);
 
-  if (isLoading || !group || !currentUser)
-    return <div className="p-10 text-center">Carregando Chat...</div>;
+  if (isLoading || !group || !currentUser || !isAuthReady)
+    return <div className="p-10 text-center">Carregando Chat e Usuário...</div>;
 
   const getUserById = (id: string): User => {
-    const foundUser = MOCK_ALL_USERS_MOCK.find((u) => u.id === id);
+    const foundUser = allUsers.find((u) => u.id === id);
 
     if (!foundUser) {
       return {
@@ -165,8 +118,7 @@ export const GroupChatPage: React.FC = () => {
     return foundUser;
   };
 
-  const mockUserActivity =
-    MOCK_USERS_LIST[0].name === "Carlos Líder" ? "Online" : "Conectado";
+  const mockUserActivity = "Online";
 
   return (
     <div className="h-full bg-gray-100 flex-col">
@@ -188,7 +140,7 @@ export const GroupChatPage: React.FC = () => {
 
       <div
         ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 pt-4 pb-20"
+        className="flex-1 overflow-y-auto p-4 space-y-4 pt-4 pb-28"
       >
         {messages.map((message) => (
           <MessageBubble
@@ -200,16 +152,21 @@ export const GroupChatPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="fixed bottom-16 bg-white border-t border-gray-200 p-4 z-20">
+      <div className="fixed bottom-0 left-0 right-0 lg:left-auto lg:w-96 bg-white border-t border-gray-200 p-4 z-20">
         <div className="flex gap-2">
           <input
             type="text"
             placeholder="Enviar mensagem..."
             className="flex-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors outline-none"
           />
-          <button className="bg-blue-600 text-white px-4 rounded-xl font-bold hover:bg-blue-700 active:scale-95 transition-transform">
-            Enviar
-          </button>
+          <ActionButton
+            onClick={() => {
+              console.log("Mensagem enviada (Simulação)");
+            }}
+            text="Enviar"
+            variant="primary"
+            isFullWidth={false}
+          />
         </div>
       </div>
     </div>

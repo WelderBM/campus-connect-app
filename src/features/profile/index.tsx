@@ -1,20 +1,44 @@
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
 import { Link } from "react-router-dom";
+import { CardContainer } from "@/globals/components/cardContainer";
+import { ActionButton } from "@/globals/components/ActionButton";
 
 export const ProfilePage: React.FC = () => {
-  const { currentUser } = useAppContext();
+  // 1. OBTENDO O ESTADO REAL E O FLAG DE CARREGAMENTO
+  const { currentUser, isAuthReady } = useAppContext();
 
-  if (!currentUser) return <div>Carregando...</div>;
+  // 2. VERIFICAÇÃO DE CARREGAMENTO E REDIRECIONAMENTO (GUARD CLAUSE)
+  if (!isAuthReady) {
+    return (
+      <div className="p-10 text-center text-xl text-gray-500">
+        Autenticando Perfil...
+      </div>
+    );
+  }
 
+  // Se terminou o Auth e o currentUser é null (o que não deve acontecer no nosso AppProvider),
+  // ou se for um Adventurer que não deveria estar aqui.
+  if (!currentUser) {
+    return (
+      <div className="p-10 text-center text-xl text-red-600">
+        Perfil não encontrado. Por favor, tente logar novamente.
+      </div>
+    );
+  }
+
+  // Lógica de XP (Pode ser transferida para um hook ou utilitário no futuro, mas mantida aqui por clareza)
   const level = Math.floor(currentUser.points / 1000) + 1;
   const nextLevelThreshold = level * 1000;
+  // Cálculo do progresso na barra
   const progress = ((currentUser.points % 1000) / 1000) * 100;
 
   return (
     <div className="h-full bg-gray-50 pb-24">
-      <div className="sticky top-16 z-40 bg-white border-b border-gray-200 pb-8 pt-6 px-4 mb-4">
+      {/* HEADER DE PERFIL (Fixo no topo) */}
+      <div className="sticky top-0 z-40 bg-white border-b border-gray-200 pb-8 pt-6 px-4 mb-4">
         <div className="max-w-md mx-auto text-center">
+          {/* Avatar e Level Badge */}
           <div className="relative inline-block mb-4">
             <div className="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-purple-500">
               <img
@@ -28,6 +52,7 @@ export const ProfilePage: React.FC = () => {
             </span>
           </div>
 
+          {/* Nome e Cargo */}
           <h1 className="text-2xl font-bold text-gray-900 flex justify-center items-center gap-2">
             {currentUser.name}
             {currentUser.isModerator && <span title="Moderador">👑</span>}
@@ -38,6 +63,7 @@ export const ProfilePage: React.FC = () => {
               : "🎒 Visitante"}
           </p>
 
+          {/* Barra de Progresso XP */}
           <div className="mt-6">
             <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
               <span>{currentUser.points} XP</span>
@@ -57,26 +83,28 @@ export const ProfilePage: React.FC = () => {
         </div>
       </div>
 
+      {/* DETALHES GERAIS (STREAK E VOTOS) */}
       <div className="grid grid-cols-2 gap-3 px-4 max-w-md mx-auto mb-6">
-        <div className="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100">
+        <CardContainer padding="default" className="text-center">
           <span className="block text-2xl mb-1">🔥</span>
           <span className="block font-bold text-gray-800 text-lg">12 Dias</span>
           <span className="text-xs text-gray-400">Sequência (Streak)</span>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100">
+        </CardContainer>
+        <CardContainer padding="default" className="text-center">
           <span className="block text-2xl mb-1">🗳️</span>
           <span className="block font-bold text-gray-800 text-lg">45</span>
           <span className="text-xs text-gray-400">Votos em Governança</span>
-        </div>
+        </CardContainer>
       </div>
 
+      {/* ULTIMAS CONQUISTAS */}
       <div className="px-4 max-w-md mx-auto">
         <h3 className="text-sm font-bold text-gray-500 uppercase mb-3">
           Últimas Conquistas
         </h3>
 
         <div className="space-y-3">
-          <div className="bg-white p-3 rounded-lg flex items-center gap-3 shadow-sm">
+          <CardContainer padding="default" className="flex items-center gap-3">
             <div className="bg-yellow-100 p-2 rounded-full text-lg">🗳️</div>
             <div>
               <p className="font-bold text-gray-800 text-sm">
@@ -89,9 +117,12 @@ export const ProfilePage: React.FC = () => {
             <span className="ml-auto text-xs font-bold text-blue-600">
               +200 XP
             </span>
-          </div>
+          </CardContainer>
 
-          <div className="bg-white p-3 rounded-lg flex items-center gap-3 shadow-sm opacity-60">
+          <CardContainer
+            padding="default"
+            className="flex items-center gap-3 opacity-60"
+          >
             <div className="bg-gray-100 p-2 rounded-full text-lg">🔇</div>
             <div>
               <p className="font-bold text-gray-800 text-sm">Mestre do Foco</p>
@@ -102,16 +133,18 @@ export const ProfilePage: React.FC = () => {
             <span className="ml-auto text-xs font-bold text-gray-400">
               Bloqueado
             </span>
-          </div>
+          </CardContainer>
         </div>
       </div>
 
-      <div className="m-4 mt-8">
-        <Link
-          to="/ranking"
-          className="block w-full text-center py-3 rounded-xl font-bold text-white shadow-md bg-gray-900 hover:bg-gray-700 transition active:scale-95 mt-4"
-        >
-          Ver Ranking Completo 🏆
+      <div className="m-4 mt-8 max-w-md mx-auto">
+        <Link to="/ranking" className="block w-full">
+          <ActionButton
+            text="Ver Ranking Completo 🏆"
+            onClick={() => {}}
+            variant="primary"
+            className="bg-gray-900 hover:bg-gray-700"
+          />
         </Link>
       </div>
     </div>

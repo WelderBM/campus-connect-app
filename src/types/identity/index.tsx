@@ -75,3 +75,9 @@ export interface Course {
   colorHex: string;
   universityId: string;
 }
+
+export interface MessageBubbleProps {
+  message: Message;
+  isCurrentUser: boolean;
+  author: User;
+}

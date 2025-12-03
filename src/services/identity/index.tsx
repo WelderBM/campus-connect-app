@@ -1,4 +1,4 @@
-import type { Course } from "@/types/identity";
+import type { Course, User } from "@/types/identity";
 
 export const MOCK_COURSES: Course[] = [
   {
@@ -35,5 +35,78 @@ export const MOCK_COURSES: Course[] = [
     shortName: "ADM",
     colorHex: "#A8DADC",
     universityId: "uni-1",
+  },
+];
+
+export const MOCK_USERS_LIST: User[] = [
+  {
+    id: "user-1",
+    name: "Carlos Líder",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-2",
+    isModerator: true,
+    points: 2100,
+    avatarUrl: "https://placehold.co/100x100/A8DADC/1D3557?text=C.L",
+  },
+  {
+    id: "user-2",
+    name: "Sofia Aventureira",
+    role: "ADVENTURER",
+    universityId: "uni-1",
+    courseId: undefined,
+    isModerator: false,
+    points: 1100,
+    avatarUrl: "https://placehold.co/100x100/F4A261/1D3557?text=S.A",
+  },
+  {
+    id: "user-3",
+    name: "Pedro Calouro",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-1",
+    isModerator: false,
+    points: 50,
+    avatarUrl: "https://placehold.co/100x100/E9C46A/1D3557?text=P.C",
+  },
+  {
+    id: "user-4",
+    name: "Ana",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-2",
+    isModerator: false,
+    points: 150,
+    avatarUrl: "https://placehold.co/100x100/E9C46A/1D3557?text=A",
+  },
+  {
+    id: "user-5",
+    name: "Bia",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-1",
+    isModerator: false,
+    points: 1200,
+    avatarUrl: "https://placehold.co/100x100/E9C46A/1D3557?text=B",
+  },
+  {
+    id: "user-6",
+    name: "Júlio",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-3",
+    isModerator: false,
+    points: 500,
+    avatarUrl: "https://placehold.co/100x100/E9C46A/1D3557?text=J",
+  },
+  {
+    id: "user-7",
+    name: "Lia",
+    role: "STUDENT",
+    universityId: "uni-1",
+    courseId: "course-3",
+    isModerator: false,
+    points: 100,
+    avatarUrl: "https://placehold.co/100x100/E9C46A/1D3557?text=L",
   },
 ];

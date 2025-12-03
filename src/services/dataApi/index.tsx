@@ -1,30 +1,25 @@
+import type {
+  CourseRanking,
+  Post,
+  Proposal,
+  Group,
+  Message,
+  User,
+} from "@/types/identity";
 import {
+  MOCK_PROPOSALS,
   MOCK_GROUPS,
   MOCK_HUDS,
   MOCK_MESSAGES,
   MOCK_POSTS,
-  MOCK_PROPOSALS,
-} from "@/services/geo";
-import { MOCK_CURRENT_USER, MOCK_USERS_LIST } from "@/services/identity";
-import { getAlliancesRanking } from "@/services/ranking";
-import type {
-  Post,
-  User,
-  Proposal,
-  Group,
-  Message,
-  CourseRanking,
-} from "@/types/identity";
+} from "../geo";
+import { MOCK_USERS_LIST } from "../identity";
+import { getAlliancesRanking } from "../ranking";
 import type { HUD } from "@/types/geo";
 
 export const api = {
   getPosts: async (): Promise<Post[]> => {
     return new Promise((resolve) => setTimeout(() => resolve(MOCK_POSTS), 800));
-  },
-  getCurrentUser: async (): Promise<User> => {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve(MOCK_CURRENT_USER), 500)
-    );
   },
   getHUDs: async (): Promise<HUD[]> => {
     return new Promise((resolve) => setTimeout(() => resolve(MOCK_HUDS), 600));

@@ -59,11 +59,6 @@ export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             <MapScaleToggle />
           </div>
         )}
-        {isActive("/fed") && (
-          <div className="sticky bottom-16 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
-            <PostInputBar />
-          </div>
-        )}
 
         <nav className="sticky bottom-0 w-full bg-white border-t border-gray-200 py-2 px-6 z-50 shrink-0">
           <div className="mx-auto flex justify-between items-center">

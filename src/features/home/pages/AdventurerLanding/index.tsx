@@ -1,23 +1,33 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CardContainer } from "@/globals/components/cardContainer";
+import { ActionButton } from "@/globals/components/ActionButton";
 
-export const AdventurerLanding: React.FC = () => {
+interface AdventurerLandingProps {
+  signInMockUser: (role: "STUDENT" | "ADVENTURER") => Promise<void>;
+}
+
+export const AdventurerLanding: React.FC<AdventurerLandingProps> = ({
+  signInMockUser,
+}) => {
   const [email, setEmail] = useState("");
-
   const navigate = useNavigate();
 
   const handleValidation = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (email.endsWith("@ufrr.edu.br")) {
-      navigate("/register");
+      alert(
+        "✅ E-mail institucional válido! Você será logado como estudante padrão."
+      );
+      signInMockUser("STUDENT");
     } else {
       alert("❌ E-mail inválido ou não-institucional. Tente novamente.");
     }
   };
 
   return (
-    <div className="p-6 space-y-8 bg-white h-full">
+    <div className="p-6 space-y-8 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-extrabold text-gray-900">
         Bem-vindo ao Campus Connect
       </h1>
@@ -25,11 +35,11 @@ export const AdventurerLanding: React.FC = () => {
         Explore a vida universitária antes mesmo de chegar.
       </p>
 
-      <div className="p-5 bg-blue-50 rounded-xl border border-blue-200">
+      <CardContainer padding="large">
         <h2 className="text-xl font-bold text-blue-800 mb-4">
           Acesse sua Instituição
         </h2>
-        <form onSubmit={handleValidation} className="space-y-3">
+        <form onSubmit={handleValidation} className="space-y-4">
           <input
             type="email"
             value={email}
@@ -38,25 +48,26 @@ export const AdventurerLanding: React.FC = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             required
           />
-          <button
-            type="submit"
-            className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 transition"
-          >
-            Validar E-mail Institucional
-          </button>
+          <ActionButton
+            onClick={() => {}}
+            variant="primary"
+            text="Validar E-mail Institucional"
+            emoji="🔑"
+            isFullWidth={true}
+          />
         </form>
-      </div>
+      </CardContainer>
 
-      <div className="space-y-4">
+      <CardContainer padding="large" className="shadow-none border-none">
         <h3 className="text-xl font-bold text-gray-800">
           O que você pode fazer aqui?
         </h3>
-        <ul className="list-disc list-inside space-y-2 text-gray-600">
+        <ul className="list-disc list-inside space-y-2 text-gray-600 mt-3">
           <li>Visualizar o mapa 3D global de universidades.</li>
           <li>Ver o Feed de notícias públicas.</li>
           <li>Explorar os HUDs (locais) mais populares.</li>
         </ul>
-      </div>
+      </CardContainer>
     </div>
   );
 };

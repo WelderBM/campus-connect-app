@@ -1,3 +1,5 @@
+import { ActionButton } from "@/globals/components/ActionButton";
+import { CardContainer } from "@/globals/components/cardContainer";
 import { api } from "@/services/dataApi";
 import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
 import type { HUD } from "@/types/geo";
@@ -18,34 +20,37 @@ export const StudentHub: React.FC = () => {
   }, []);
 
   const hudsByCategory = MOCK_HUDS.reduce((acc, hud) => {
-    acc[hud.category] = acc[hud.category] || [];
-    acc[hud.category].push(hud);
+    const categoryLabel =
+      hud.category.charAt(0).toUpperCase() +
+      hud.category.slice(1).toLowerCase();
+    acc[categoryLabel] = acc[categoryLabel] || [];
+    acc[categoryLabel].push(hud);
     return acc;
   }, {} as Record<string, HUD[]>);
 
   const ActionsSection = () => {
     return (
       <div className="grid grid-cols-2 gap-4">
-        <button
+        <ActionButton
           onClick={() => navigate("/map")}
-          className="p-4 bg-green-500 text-white rounded-xl font-bold shadow-md hover:bg-green-600 transition"
-        >
-          📍 Explorar Mapa
-        </button>
-        <button
+          text="Explorar Mapa"
+          emoji="📍"
+          variant="success"
+        />
+        <ActionButton
           onClick={() => navigate("/feed")}
-          className="p-4 bg-orange-500 text-white rounded-xl font-bold shadow-md hover:bg-orange-600 transition"
-        >
-          💬 Feed da Comunidade
-        </button>
+          text="Feed da Comunidade"
+          emoji="💬"
+          variant="primary"
+        />
       </div>
     );
   };
 
   const RankingSection = () => {
     return (
-      <div className="bg-white p-4 rounded-xl shadow-lg">
-        <h2 className="text-xl font-bold mb-3">🔥 Ranking de Facções</h2>
+      <CardContainer className="bg-blue-600 text-white" padding="large">
+        <h2 className="text-xl font-bold mb-3">🏆 Ranking de Alianças</h2>
         <div className="space-y-2">
           {dominantAlliances.map((rank, index) => (
             <div
@@ -64,13 +69,13 @@ export const StudentHub: React.FC = () => {
             </div>
           ))}
         </div>
-        <button
+        <ActionButton
           onClick={() => navigate("/profile")}
-          className="mt-4 w-full py-2 text-white bg-blue-600 font-bold rounded-lg hover:bg-blue-700 transition text-sm"
-        >
-          Ver Seu Perfil e Ranking Completo
-        </button>
-      </div>
+          text="Ver Seu Perfil e Ranking Completo"
+          variant="secondary"
+          className="mt-4 bg-white text-blue-600 hover:bg-gray-100" // Cores invertidas
+        />
+      </CardContainer>
     );
   };
 
@@ -78,37 +83,40 @@ export const StudentHub: React.FC = () => {
     return (
       <div className="space-y-3">
         {Object.keys(hudsByCategory).map((category) => (
-          <details
+          <CardContainer
             key={category}
-            className="group bg-white rounded-xl shadow overflow-hidden"
+            padding="none"
+            className="overflow-hidden"
           >
-            <summary className="p-4 flex justify-between items-center cursor-pointer font-bold text-gray-700 list-none border-b group-open:border-b-0">
-              {category.charAt(0).toUpperCase() +
-                category.slice(1).toLowerCase()}
-              <span className="transition-transform duration-300 transform group-open:rotate-90">
-                ›
-              </span>
-            </summary>
-            <div className="p-2 border-t border-gray-100 space-y-1">
-              {hudsByCategory[category].map((hud) => (
-                <button
-                  key={hud.id}
-                  onClick={() => navigate(`/hud/${hud.id}`)}
-                  className="w-full text-left p-3 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition flex justify-between items-center"
-                >
-                  <span>{hud.nickname}</span>
-                  <span className="text-xs text-blue-500">Ir →</span>
-                </button>
-              ))}
-            </div>
-          </details>
+            <details className="group">
+              <summary className="p-4 flex justify-between items-center cursor-pointer font-bold text-gray-700 list-none border-b group-open:border-b-0">
+                {category}
+                <span className="transition-transform duration-300 transform group-open:rotate-90">
+                  ›
+                </span>
+              </summary>
+              <div className="p-2 border-t border-gray-100 space-y-1">
+                {hudsByCategory[category].map((hud) => (
+                  <ActionButton
+                    key={hud.id}
+                    onClick={() => navigate(`/hud/${hud.id}`)}
+                    text={hud.nickname}
+                    emoji={hud.emoji}
+                    variant="secondary"
+                    isFullWidth={true}
+                    className="justify-between text-left px-3 py-2 text-sm bg-transparent hover:bg-gray-100 shadow-none border-none"
+                  />
+                ))}
+              </div>
+            </details>
+          </CardContainer>
         ))}
       </div>
     );
   };
 
   return (
-    <div className="p-4 space-y-6 bg-gray-50 h-full">
+    <div className="p-4 space-y-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold text-gray-800">
         Bem-vindo(a), {MOCK_UNIVERSITY.shortName}
       </h1>
@@ -116,8 +124,8 @@ export const StudentHub: React.FC = () => {
         Seu ponto de partida no Geo-Hub da {MOCK_UNIVERSITY.name}.
       </p>
       <ActionsSection />
-      <CategoriesSection />
       <RankingSection />
+      <CategoriesSection />
     </div>
   );
 };

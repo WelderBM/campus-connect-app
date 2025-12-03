@@ -2,10 +2,16 @@ import React from "react";
 import { useAppContext } from "@/context/AppContext";
 import FilterBar from "./components/FilterBar";
 import PostCard from "./components/PostCard";
-import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
 import type { Post } from "@/types/identity";
-import { universityFlag } from "@/globals/components/universityFlag";
+import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
+import { PostInputBar } from "./components/PostImputBar";
 import { CardContainer } from "@/globals/components/cardContainer";
+
+const universityFlag = (
+  <span role="img" aria-label="Brazil Flag">
+    🇧🇷
+  </span>
+);
 
 const LoadingSkeleton: React.FC = () => (
   <div className="space-y-4">
@@ -23,13 +29,31 @@ const LoadingSkeleton: React.FC = () => (
   </div>
 );
 
+const MOCK_POSTS: Post[] = [
+  {
+    id: "p1",
+    authorId: "user-0",
+    hudId: "hud-1",
+    content: "Primeiro post mockado!",
+    likes: 5,
+    isCurated: false,
+    createdAt: new Date().toISOString(),
+  } as Post,
+  {
+    id: "p2",
+    authorId: "user-1",
+    hudId: "hud-1",
+    content: "Post Curado Globalmente.",
+    likes: 100,
+    isCurated: true,
+    createdAt: new Date().toISOString(),
+  } as Post,
+];
+
 export const FeedPage: React.FC = () => {
-  const { posts, isLoading, currentUser, filterLevel } = useAppContext();
+  const { currentUser, filterLevel, isAuthReady } = useAppContext();
 
-  const USER_UNI_ID = "uni-1";
-  const USER_COUNTRY_FLAG = universityFlag;
-
-  if (isLoading || !currentUser) {
+  if (!isAuthReady) {
     return (
       <div className="max-w-3xl mx-auto p-4">
         <h2 className="text-2xl font-bold mb-4">
@@ -40,16 +64,28 @@ export const FeedPage: React.FC = () => {
     );
   }
 
-  const filteredPosts = posts.filter((post) => {
+  if (!currentUser) {
+    return (
+      <div className="p-10 text-center text-xl text-red-600">
+        Acesso negado. Por favor, faça login novamente.
+      </div>
+    );
+  }
+
+  const USER_UNI_ID = currentUser.universityId;
+  const USER_COUNTRY_FLAG = MOCK_UNIVERSITY.countryFlag;
+
+  const filteredPosts = MOCK_POSTS.filter((post) => {
     const postHud = MOCK_HUDS.find((h) => h.id === post.hudId);
     if (!postHud) return false;
 
     switch (filterLevel) {
       case "GLOBAL":
+        // Filtro GLOBAL: Apenas posts curados (oficiais)
         return post.isCurated;
 
       case "NATIONAL":
-        return MOCK_UNIVERSITY.countryFlag === USER_COUNTRY_FLAG;
+        return true;
 
       case "INSTITUTION":
         return postHud.universityId === USER_UNI_ID;
@@ -61,14 +97,15 @@ export const FeedPage: React.FC = () => {
 
   return (
     <CardContainer padding="none">
-      <div className="sticky top-16 z-40 bg-gray-50 pt-3 pb-3 shadow-md border-b border-gray-200 px-4">
+      <div className="sticky top-0 z-40 bg-gray-50 pt-3 pb-3 shadow-md border-b border-gray-200 px-4">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-6">
           Sala de Convivência
         </h1>
         <FilterBar />
       </div>
       <div>
-        <div className="p-4">
+        <div className="p-4 space-y-4">
+          {" "}
           {filteredPosts.map((post: Post) => {
             const hud = MOCK_HUDS.find((h) => h.id === post.hudId);
 
@@ -81,13 +118,15 @@ export const FeedPage: React.FC = () => {
               />
             );
           })}
-
           {filteredPosts.length === 0 && (
             <p className="text-center text-gray-500 mt-10">
               Nenhum post encontrado no nível {filterLevel}.
             </p>
           )}
         </div>
+      </div>
+      <div className="sticky bottom-0 w-full bg-white border-t border-gray-200 z-50 lg:max-w-md">
+        <PostInputBar />
       </div>
     </CardContainer>
   );
