@@ -3,13 +3,13 @@ import { MainLayout } from "./layouts/MainLayout";
 import { InstitutionalHubPage } from "./features/home/pages/index.tsx";
 import { FeedPage } from "./features/feed";
 import { GroupChatPage } from "./features/chat";
-import { GovernancePage } from "./features/governance/pages";
+import { GovernancePage } from "./features/governance/index.tsx";
 import { ProfilePage } from "./features/profile";
 import { ChatHubPage } from "./features/chat/components/GroupChatPage";
 import { RankingPage } from "./features/ranquing";
 import { HudPage } from "./features/geo-hub/pages/index.tsx";
 import { MapHandler } from "./features/geo-hub/pages/mapHandler/index.tsx";
-import { ProposalFormPage } from "./features/governance/pages/ProposalFormPage/index.tsx";
+import { ProposalFormPage } from "./features/governance/pages/ProposalFormPage";
 
 function App() {
   const UniversityPlaceholder = () => (
