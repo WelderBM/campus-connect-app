@@ -24,8 +24,8 @@ import {
   setLogLevel,
 } from "firebase/firestore";
 import { isWithinRadius, isWithinPolygon } from "@/utils/geoUtils";
-import type { Course, User } from "@/types/identity";
-import type { Coordinates, HUD, University } from "@/types/geo";
+import type { Course, User } from "@/types";
+import type { Coordinates, HUD, University } from "@/types";
 
 declare const __app_id: string;
 declare const __firebase_config: string;

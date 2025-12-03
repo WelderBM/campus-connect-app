@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import type { University, HUD, Coordinates } from "@/types/geo";
+import type { University, HUD, Coordinates } from "@/types";
 
 interface Map3DProps {
   university: University;

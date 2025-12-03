@@ -1,5 +1,5 @@
-import type { HUD } from "@/types/geo";
-import type { Post, User } from "@/types/identity";
+import type { HUD } from "@/types";
+import type { Post, User } from "@/types";
 import React from "react";
 import { CardContainer } from "@/global/components/CardContainer";
 import { getThemeClasses } from "@/utils/themeHelpers";

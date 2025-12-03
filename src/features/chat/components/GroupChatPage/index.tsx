@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
-import type { Group, Message, User } from "@/types/identity";
+import type { Group, Message, User } from "@/types";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,

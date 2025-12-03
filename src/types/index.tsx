@@ -34,6 +34,7 @@ export interface University {
   backgroundImage?: string;
   state: string;
   centerCoordinates: Coordinates;
+  proximityRadiusKm: number;
 }
 
 export interface HUD {
