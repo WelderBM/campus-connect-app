@@ -1,8 +1,8 @@
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
 import { Link } from "react-router-dom";
-import { CardContainer } from "@/globals/components/cardContainer";
-import { ActionButton } from "@/globals/components/ActionButton";
+import { CardContainer } from "@/global/components/cardContainer";
+import { ActionButton } from "@/global/components/ActionButton";
 
 export const ProfilePage: React.FC = () => {
   // 1. OBTENDO O ESTADO REAL E O FLAG DE CARREGAMENTO

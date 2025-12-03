@@ -3,7 +3,7 @@ import { MainLayout } from "./layouts/MainLayout";
 import { InstitutionalHubPage } from "./features/home/pages/index.tsx";
 import { FeedPage } from "./features/feed";
 import { GroupChatPage } from "./features/chat";
-import { GovernancePage } from "./features/governance/index.tsx";
+import { GovernancePage } from "./features/governance/pages/index.tsx";
 import { ProfilePage } from "./features/profile";
 import { ChatHubPage } from "./features/chat/components/GroupChatPage";
 import { RankingPage } from "./features/ranquing";

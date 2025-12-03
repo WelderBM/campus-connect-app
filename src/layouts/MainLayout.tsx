@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppContext } from "@/context/AppContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { universityFlag } from "@/globals/components/universityFlag";
+import { universityFlag } from "@/global/components/universityFlag";
 import { PostInputBar } from "@/features/feed/components/PostImputBar";
 import { MapScaleToggle } from "@/features/geo-hub/components/MapTypeToggle";
 import { MOCK_UNIVERSITY } from "@/services/geo";

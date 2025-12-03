@@ -29,7 +29,9 @@ const calculateWeightedXP = (
   return { course, totalXP, activeUsers, weightedScore };
 };
 
-export const getFactionsRanking = (realUser?: User | null): CourseRanking[] => {
+export const getAlliancesRanking = (
+  realUser?: User | null
+): CourseRanking[] => {
   let allUsers: User[] = [...MOCK_USERS_LIST];
 
   if (

@@ -31,7 +31,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 import { useAppContext } from "@/context/AppContext";
-//import { ActionButton } from "@/globals/components/ActionButton";
+//import { ActionButton } from "@/global/components/ActionButton";
 
 const MIN_ZOOM_LEVEL_FOR_HUDS = 16;
 

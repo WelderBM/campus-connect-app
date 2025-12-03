@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CardContainer } from "@/globals/components/cardContainer";
-import { ActionButton } from "@/globals/components/ActionButton";
+import { CardContainer } from "@/global/components/cardContainer";
+import { ActionButton } from "@/global/components/ActionButton";
 
 interface AdventurerLandingProps {
   signInMockUser: (role: "STUDENT" | "ADVENTURER") => Promise<void>;

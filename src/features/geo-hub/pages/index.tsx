@@ -1,11 +1,13 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { MOCK_HUDS, MOCK_POSTS } from "@/services/geo";
-import { MOCK_CURRENT_USER } from "@/services/identity";
+import { useAppContext } from "@/context/AppContext";
 import { getThemeClasses } from "@/utils/themeHelpers";
 import PostCard from "@/features/feed/components/PostCard/index";
+import { MOCK_HUDS, MOCK_POSTS } from "@/services/geo";
 
 export const HudPage: React.FC = () => {
+  const { currentUser } = useAppContext();
+
   const { hudId } = useParams();
   const hud = MOCK_HUDS.find((h) => h.id === hudId);
 
@@ -21,7 +23,7 @@ export const HudPage: React.FC = () => {
     <div className="h-full bg-gray-50 pb-24">
       {" "}
       <div
-        className={`${theme.bg} ${theme.border} border-b-4 p-6 shadow-sm sticky top-16`}
+        className={`${theme.bg} ${theme.border} border-b-4 p-6 shadow-sm sticky top-16 z-10`}
       >
         <Link
           to="/"
@@ -61,12 +63,14 @@ export const HudPage: React.FC = () => {
             {hud.activeUsers} pessoas
           </span>
         </div>
+
         <button
           className={`
             w-full py-4 rounded-xl font-bold text-white shadow-lg transform active:scale-95 transition-all
             flex justify-center items-center gap-2 text-lg
             ${theme.tagBg} hover:opacity-90 
-        `}
+          `}
+          onClick={() => alert(`Ação para ${hud.category} em desenvolvimento!`)}
         >
           {hud.category === "ACADEMIC" && (
             <span>🔇 Entrar no Modo Silêncio</span>
@@ -87,7 +91,7 @@ export const HudPage: React.FC = () => {
                 <PostCard
                   key={post.id}
                   post={post}
-                  author={MOCK_CURRENT_USER} // Simplificação: usando o user atual como autor
+                  author={currentUser}
                   hud={hud}
                 />
               ))}

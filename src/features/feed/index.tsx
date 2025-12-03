@@ -5,7 +5,7 @@ import PostCard from "./components/PostCard";
 import type { Post } from "@/types/identity";
 import { MOCK_HUDS, MOCK_UNIVERSITY } from "@/services/geo";
 import { PostInputBar } from "./components/PostImputBar";
-import { CardContainer } from "@/globals/components/cardContainer";
+import { CardContainer } from "@/global/components/cardContainer";
 
 const universityFlag = (
   <span role="img" aria-label="Brazil Flag">

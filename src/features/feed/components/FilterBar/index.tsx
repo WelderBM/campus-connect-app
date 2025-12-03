@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context/AppContext";
-import { universityFlag } from "@/globals/components/universityFlag";
+import { universityFlag } from "@/global/components/universityFlag";
 import type { JSX } from "react";
 
 export default function FilterBar() {

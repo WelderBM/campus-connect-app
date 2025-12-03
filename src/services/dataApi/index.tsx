@@ -14,8 +14,8 @@ import {
   MOCK_POSTS,
 } from "../geo";
 import { MOCK_USERS_LIST } from "../identity";
-import { getAlliancesRanking } from "../ranking";
 import type { HUD } from "@/types/geo";
+import { getAlliancesRanking } from "../ranking";
 
 export const api = {
   getPosts: async (): Promise<Post[]> => {
