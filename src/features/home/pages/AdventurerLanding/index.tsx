@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { CardContainer } from "@/global/components/CardContainer";
 import { ActionButton } from "@/global/components/ActionButton";
 
@@ -11,7 +10,6 @@ export const AdventurerLanding: React.FC<AdventurerLandingProps> = ({
   signInMockUser,
 }) => {
   const [email, setEmail] = useState("");
-  const navigate = useNavigate();
 
   const handleValidation = (e: React.FormEvent) => {
     e.preventDefault();

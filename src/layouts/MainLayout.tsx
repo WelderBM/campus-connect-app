@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
 import { ActionButton } from "@/global/components/ActionButton";
 import { CardContainer } from "@/global/components/CardContainer";
@@ -35,16 +35,15 @@ export const MainLayout: React.FC = () => {
     locationStatus,
     currentHubId,
     universityData,
+    hudsList,
   } = useAppContext();
+
   const location = useLocation();
-  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const currentPath = location.pathname;
 
-  const currentHub = currentHubId
-    ? (universityData?.huds || []).find((h) => h.id === currentHubId)
-    : null;
+  const currentHub = hudsList.find((h) => h.id === currentHubId);
 
   const showSidebar = isAuthReady && currentUser?.role === "STUDENT";
 

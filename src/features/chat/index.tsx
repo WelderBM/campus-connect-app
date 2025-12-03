@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
+import { CardContainer } from "@/global/components/CardContainer";
 import { ActionButton } from "@/global/components/ActionButton";
+import type { Group } from "@/types/identity";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -10,8 +12,6 @@ import {
   where,
   onSnapshot,
 } from "firebase/firestore";
-import type { Group } from "@/types/identity";
-import { CardContainer } from "@/global/components/CardContainer";
 
 declare const __app_id: string;
 declare const __firebase_config: string;
@@ -62,7 +62,10 @@ export const ChatHubPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isAuthReady || !currentUser || !currentUser.id) return;
+    if (!isAuthReady || !currentUser || !currentUser.id) {
+      setIsLoading(false);
+      return;
+    }
 
     const appId = typeof __app_id !== "undefined" ? __app_id : "default-app-id";
     const groupsCollectionRef = collection(
@@ -70,6 +73,7 @@ export const ChatHubPage: React.FC = () => {
       `artifacts/${appId}/public/data/groups`
     );
 
+    // Query para buscar grupos onde o ID do usuário atual é um membro
     const groupsQuery = query(
       groupsCollectionRef,
       where("memberIds", "array-contains", currentUser.id)
@@ -96,14 +100,20 @@ export const ChatHubPage: React.FC = () => {
         setIsLoading(false);
         setError(null);
       },
-      (e) => {
-        setError("Erro ao carregar lista de chats.");
+      () => {
+        setError("Erro ao carregar lista de chats em tempo real.");
         setIsLoading(false);
       }
     );
 
     return () => unsubscribe();
   }, [isAuthReady, currentUser]);
+
+  const handleNewChat = () => {
+    // Em vez de alert(), navegamos ou mostramos um modal de criação (simplificado aqui para console)
+    console.log("Navegando para módulo de criação de chat...");
+    // navigate("/chat/new"); // Se houver uma rota para isso
+  };
 
   if (!isAuthReady || isLoading) {
     return (
@@ -133,9 +143,9 @@ export const ChatHubPage: React.FC = () => {
             Você ainda não faz parte de nenhum grupo.
           </p>
           <ActionButton
-            text="Explorar o Feed para Entrar em Grupos"
-            onClick={() => {}}
-            variant="secondary"
+            text="Criar Novo Grupo ou Chat"
+            onClick={handleNewChat}
+            variant="primary"
           />
         </CardContainer>
       ) : (
@@ -145,6 +155,14 @@ export const ChatHubPage: React.FC = () => {
       {error && (
         <div className="text-center text-sm text-red-500 mt-4">{error}</div>
       )}
+
+      <button
+        className="fixed bottom-24 right-6 bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition active:scale-90 z-40 flex items-center justify-center w-14 h-14"
+        title="Iniciar Novo Chat"
+        onClick={handleNewChat}
+      >
+        <span className="text-2xl">💬</span>
+      </button>
     </div>
   );
 };

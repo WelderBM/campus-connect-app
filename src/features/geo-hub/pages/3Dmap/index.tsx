@@ -7,7 +7,7 @@ interface Map3DProps {
   huds: HUD[];
 }
 
-export const Map3D: React.FC<Map3DProps> = ({ university, huds }) => {
+export const Map3D: React.FC<Map3DProps> = ({ university }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [isRotating, setIsRotating] = useState(false);
   const [mouseDownPosition, setMouseDownPosition] = useState({ x: 0, y: 0 });
