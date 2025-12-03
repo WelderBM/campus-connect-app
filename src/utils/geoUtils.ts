@@ -1,60 +1,45 @@
-import type { Coordinates } from "@/types/geo";
+import type { Coordinates, PolygonCoordinates } from "@/types/geo";
 
-const EARTH_RADIUS_KM = 6371;
-
-/**
- * Calcula a distância Haversine entre dois pontos em quilômetros.
- */
-export const calculateDistance = (p1: Coordinates, p2: Coordinates): number => {
-  const [lat1, lon1] = p1;
-  const [lat2, lon2] = p2;
-
-  const toRad = (value: number) => (value * Math.PI) / 180;
-
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return EARTH_RADIUS_KM * c;
-};
-
-/**
- * Verifica se um ponto está dentro do raio de alcance de um centro.
- */
 export const isWithinRadius = (
-  currentPosition: Coordinates,
+  current: Coordinates,
   center: Coordinates,
   radiusKm: number
 ): boolean => {
-  const distance = calculateDistance(currentPosition, center);
-  return distance <= radiusKm;
+  const R = 6371;
+  const lat1 = current[0] * (Math.PI / 180);
+  const lat2 = center[0] * (Math.PI / 180);
+  const deltaLat = (center[0] - current[0]) * (Math.PI / 180);
+  const deltaLon = (center[1] - current[1]) * (Math.PI / 180);
+
+  const a =
+    Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+    Math.cos(lat1) *
+      Math.cos(lat2) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distanceKm = R * c;
+
+  return distanceKm <= radiusKm;
 };
 
-/**
- * Verifica se um ponto está dentro de um polígono usando o algoritmo Ray Casting.
- */
 export const isWithinPolygon = (
   point: Coordinates,
-  polygon: Coordinates[]
+  polygon: PolygonCoordinates
 ): boolean => {
-  const [x, y] = point;
-  let inside = false;
+  const x = point[0];
+  const y = point[1];
 
+  let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const [xi, yi] = polygon[i];
-    const [xj, yj] = polygon[j];
+    const xi = polygon[i][0];
+    const yi = polygon[i][1];
+    const xj = polygon[j][0];
+    const yj = polygon[j][1];
 
     const intersect =
       yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
-
     if (intersect) inside = !inside;
   }
 

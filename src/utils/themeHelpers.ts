@@ -1,49 +1,19 @@
-import { type ThemeKey, THEME_COLORS } from "../types/themes";
+import { THEME_COLORS, type ThemeKey } from "@/types/themes";
 
-interface ThemeClasses {
-  border: string;
+export interface ThemeClasses {
   bg: string;
   text: string;
+  border: string;
   tagBg: string;
 }
 
 export const getThemeClasses = (category: ThemeKey): ThemeClasses => {
-  const mapping: Record<ThemeKey, ThemeClasses> = {
-    ACADEMIC: {
-      border: "border-academic-secondary",
-      bg: "bg-white",
-      text: "text-academic-secondary",
-      tagBg: "bg-academic-primary",
-    },
-    SERVICE: {
-      border: "border-service-secondary",
-      bg: "bg-white",
-      text: "text-service-secondary",
-      tagBg: "bg-service-primary",
-    },
-    LEISURE: {
-      border: "border-leisure-secondary",
-      bg: "bg-white",
-      text: "text-leisure-secondary",
-      tagBg: "bg-leisure-primary",
-    },
-    SPORTS: {
-      border: "border-sports-secondary",
-      bg: "bg-white",
-      text: "text-sports-secondary",
-      tagBg: "bg-sports-primary",
-    },
-    GENERAL: {
-      border: "border-general-secondary",
-      bg: "bg-white",
-      text: "text-general-secondary",
-      tagBg: "bg-general-primary",
-    },
+  const theme = THEME_COLORS[category];
+
+  return {
+    bg: `bg-[${theme.primary}]`,
+    text: `text-[${theme.secondary}]`,
+    border: `border-[${theme.secondary}]`,
+    tagBg: `bg-[${theme.secondary}]/10`,
   };
-
-  return mapping[category] || mapping.ACADEMIC;
-};
-
-export const getThemeColors = (category: ThemeKey) => {
-  return THEME_COLORS[category] || THEME_COLORS.ACADEMIC;
 };
