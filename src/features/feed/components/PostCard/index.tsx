@@ -6,7 +6,7 @@ import { getThemeClasses } from "@/utils/themeHelpers";
 
 interface PostCardProps {
   post: Post;
-  author: User;
+  author: User | null;
   hud: HUD;
 }
 
@@ -31,7 +31,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, author, hud }) => {
         <div className="flex items-center space-x-3">
           <img
             src={
-              author.avatarUrl || "https://placehold.co/40x40/ccc/333?text=?"
+              author?.avatarUrl || "https://placehold.co/40x40/ccc/333?text=?"
             }
             alt={authorName}
             className="w-10 h-10 rounded-full object-cover shadow-sm"

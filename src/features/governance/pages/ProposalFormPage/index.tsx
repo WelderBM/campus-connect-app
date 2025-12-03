@@ -1,7 +1,7 @@
 import React from "react";
 import { ActionButton } from "@/global/components/ActionButton";
 import { getThemeClasses } from "@/utils/themeHelpers";
-import type { Proposal } from "@/types/identity";
+import type { Proposal } from "@/types";
 import { CardContainer } from "@/global/components/CardContainer";
 
 interface ProposalCardProps {

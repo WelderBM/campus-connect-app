@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import type { University, HUD, Coordinates } from "@/types";
+import type { University, Coordinates } from "@/types";
 
 interface Map3DProps {
   university: University;
-  huds: HUD[];
 }
 
 export const Map3D: React.FC<Map3DProps> = ({ university }) => {

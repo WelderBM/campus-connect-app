@@ -13,8 +13,7 @@ import {
   MOCK_UNIVERSITIES_LIST,
   MOCK_UNIVERSITY,
 } from "@/services/mocks/geo";
-import type { HUD, University } from "@/types/geo";
-import { getThemeColors } from "@/utils/themeHelpers";
+import { THEME_COLORS, type HUD, type University } from "@/types";
 import L from "leaflet";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Importe useLocation
 
@@ -31,6 +30,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 import { useAppContext } from "@/context/AppContext";
+
 //import { ActionButton } from "@/global/components/ActionButton";
 
 const MIN_ZOOM_LEVEL_FOR_HUDS = 16;
@@ -66,7 +66,7 @@ const VisualizationLayer: React.FC = () => {
       <>
         {MOCK_HUDS.filter((hud) => hud.universityId === currentUniId).map(
           (hud: HUD) => {
-            const theme = getThemeColors(hud.category);
+            const theme = THEME_COLORS[hud.category];
             return (
               <Polygon
                 key={hud.id}

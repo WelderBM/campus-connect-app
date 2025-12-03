@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ActionButton } from "@/global/components/ActionButton";
-import { THEME_COLORS, type ThemeKey } from "@/types/themes";
+import { THEME_COLORS, type ThemeKey } from "@/types";
 import { CardContainer } from "@/global/components/CardContainer";
 
 export const ProposalFormPage: React.FC = () => {

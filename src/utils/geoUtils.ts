@@ -1,4 +1,4 @@
-import type { Coordinates, PolygonCoordinates } from "@/types/geo";
+import type { Coordinates, PolygonCoordinates } from "@/types";
 
 export const isWithinRadius = (
   current: Coordinates,

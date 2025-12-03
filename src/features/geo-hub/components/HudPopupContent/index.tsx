@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { HUD } from "@/types/geo";
+import type { HUD } from "@/types";
 
 interface HudPopupContentProps {
   hud: HUD;
@@ -31,8 +31,8 @@ export const HudPopupContent: React.FC<HudPopupContentProps> = ({
         }`}
       >
         {isMyUniversity
-          ? `🟢 ${hud.activeUsers} Pessoas Agora`
-          : `🗺️ ${hud.universityId} - ${hud.activeUsers} Ativos`}
+          ? `🟢 ${hud.usersCount} Pessoas Agora`
+          : `🗺️ ${hud.universityId} - ${hud.usersCount} Ativos`}
       </div>
 
       <Link

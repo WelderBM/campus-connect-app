@@ -1,9 +1,9 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "@/context/AppContext";
-import { getThemeClasses } from "@/utils/themeHelpers";
-import PostCard from "@/features/feed/components/PostCard/index";
 import { MOCK_HUDS, MOCK_POSTS } from "@/services/mocks/geo";
+import { getThemeClasses } from "@/utils/themeHelpers";
+import { PostCard } from "@/features/feed/components/PostCard";
 
 export const HudPage: React.FC = () => {
   const { currentUser } = useAppContext();
@@ -27,7 +27,7 @@ export const HudPage: React.FC = () => {
       >
         <Link
           to="/"
-          className="text-sm text-gray-500 mb-4 block hover:underline flex items-center gap-1"
+          className="text-sm text-gray-500 mb-4 hover:underline flex items-center gap-1"
         >
           <span>⬅️</span> Voltar para o Início
         </Link>

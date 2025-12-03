@@ -1,4 +1,4 @@
-import { THEME_COLORS, type ThemeKey } from "@/types/themes";
+import { THEME_COLORS, type ThemeKey } from "@/types";
 
 export interface ThemeClasses {
   bg: string;

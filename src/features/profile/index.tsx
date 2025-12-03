@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { api } from "@/services/dataApi";
-import type { User } from "@/types/identity";
+import type { User } from "@/types";
 import { RankingCard } from "./components/RankingCard";
 import { CardContainer } from "@/global/components/CardContainer";
 

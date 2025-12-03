@@ -1,14 +1,14 @@
-// src/features/geo-hub/pages/index.tsx
+import React from "react";
 import { useAppContext } from "@/context/AppContext";
-import { GlobalViewPage } from "../3Dmap";
 import { GeoHubPage } from "../2Dmap";
+import { Map3D } from "../3Dmap";
 
-export const MapHandler = () => {
-  const { filterLevel } = useAppContext();
+export const MapHandler: React.FC = () => {
+  const { filterLevel, currentUniversityId } = useAppContext();
 
   if (filterLevel === "GLOBAL" || filterLevel === "NATIONAL") {
-    return <GlobalViewPage />;
-  } else {
-    return <GeoHubPage />;
+    return <Map3D university={} />;
   }
+
+  return <GeoHubPage />;
 };
