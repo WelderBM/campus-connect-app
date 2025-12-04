@@ -1,6 +1,7 @@
 import type { CourseRanking, User } from "@/types";
 import { getFactionsRanking } from "../ranking";
 import { MOCK_USERS_LIST } from "../mocks/identity";
+import { getFactionsRanking } from "../mocks/ranking";
 
 export const api = {
   getRanking: async (): Promise<User[]> => {
