@@ -66,7 +66,6 @@ export interface Proposal {
   votesFor: number;
   votesAgainst: number;
   expiresAt: string;
-  createdAt: number;
 }
 
 export interface Course {

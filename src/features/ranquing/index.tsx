@@ -1,51 +1,70 @@
-import { MOCK_COURSES, MOCK_USERS_LIST } from "@/services/mocks/identity";
-import type { CourseRanking } from "@/types";
-import type { User } from "@/types";
+import React, { useEffect, useState } from "react";
+import { useAppContext } from "@/context/AppContext";
+import { RankingCard } from "../profile/components/RankingCard";
+import { Link } from "react-router-dom";
+import type { User } from "@/types/identity";
+import { api } from "@/services/dataApi";
+import { MOCK_USERS_LIST } from "@/services/mocks/identity";
 
-interface AllUsersContext {
-  users: User[];
-}
+export const RankingPage: React.FC = () => {
+  const { currentUser } = useAppContext();
+  const [ranking, setRanking] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-const calculateWeightedXP = (
-  courseId: string,
-  context: AllUsersContext
-): CourseRanking => {
-  const course = MOCK_COURSES.find((c) => c.id === courseId);
-  if (!course) throw new Error(`Course ${courseId} not found.`);
+  useEffect(() => {
+    api.getRanking().then((data) => {
+      setRanking(data);
+      setIsLoading(false);
+    });
+  }, []);
 
-  const members = context.users.filter((u) => u.courseId === courseId);
-  const activeUsers = members.length;
-
-  const totalXP = members.reduce((sum, user) => sum + (user.points || 0), 0);
-
-  if (activeUsers === 0) {
-    return { course, totalXP: 0, activeUsers: 0, weightedScore: 0 };
+  if (isLoading || !currentUser) {
+    return <div className="p-10 text-center">Carregando Ranking...</div>;
   }
 
-  const averageXP = totalXP / activeUsers;
-  const participationFactor = 1 + activeUsers / 100;
+  const userRankIndex = ranking.findIndex((u) => u.id === currentUser.id);
+  const userRank =
+    userRankIndex !== -1 ? userRankIndex + 1 : MOCK_USERS_LIST.length + 1;
 
-  const weightedScore = averageXP * participationFactor;
+  return (
+    <div className="min-h-screen bg-gray-50 pb-24">
+      <div className="bg-white border-b border-gray-200 p-6 shadow-sm mb-6">
+        <Link
+          to="/profile"
+          className="text-sm text-gray-500 mb-2 block hover:underline"
+        >
+          ← Voltar ao Perfil
+        </Link>
+        <h1 className="text-2xl font-bold text-gray-900">
+          🏆 Ranking Semestral
+        </h1>
+        <p className="text-gray-500 text-sm mt-1">
+          Veja quem está liderando o engajamento na UFRR.
+        </p>
+      </div>
 
-  return { course, totalXP, activeUsers, weightedScore };
-};
+      <div className="px-4 space-y-3">
+        <div className="bg-blue-100/70 p-4 rounded-xl shadow-lg border-2 border-blue-400 text-center mb-6">
+          <p className="text-sm font-semibold text-blue-800">
+            Sua Posição Atual:
+          </p>
+          <p className="text-4xl font-extrabold text-blue-900 mt-1">
+            {userRank}° Lugar
+          </p>
+          <p className="text-sm text-blue-700 mt-2">
+            Próximo Nível em {2000 - currentUser.points} XP.
+          </p>
+        </div>
 
-export const getFactionsRanking = (realUser?: User | null): CourseRanking[] => {
-  let allUsers: User[] = [...MOCK_USERS_LIST];
-
-  if (
-    realUser &&
-    realUser.id &&
-    !MOCK_USERS_LIST.some((u) => u.id === realUser.id)
-  ) {
-    allUsers.push(realUser);
-  }
-
-  const context: AllUsersContext = { users: allUsers };
-
-  const ranking = MOCK_COURSES.map((course) =>
-    calculateWeightedXP(course.id, context)
+        {ranking.map((user, index) => (
+          <RankingCard
+            key={user.id}
+            user={user}
+            rank={index + 1}
+            isCurrentUser={user.id === currentUser.id}
+          />
+        ))}
+      </div>
+    </div>
   );
-
-  return ranking.sort((a, b) => b.weightedScore - a.weightedScore);
 };

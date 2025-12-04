@@ -1,43 +1,59 @@
-import React from "react";
-
 interface CardContainerProps {
   children: React.ReactNode;
-  padding?: "none" | "small" | "default" | "large";
-  isClickable?: boolean;
+
+  padding: "default" | "none" | "large";
+
   className?: string;
+
+  onClick?: () => void;
+
+  isClickable?: boolean;
 }
+
+const getCardClasses = (
+  isClickable: boolean,
+  padding: CardContainerProps["padding"]
+): string => {
+  const baseClasses = `
+    bg-white 
+    rounded-xl 
+    border border-gray-100 
+    w-full
+  `;
+
+  const paddingClasses = {
+    default: "p-4",
+    large: "p-6",
+    none: "p-0",
+  }[padding];
+
+  const interactiveClasses = isClickable
+    ? "cursor-pointer transform hover:shadow-xl active:scale-[0.99] transition duration-200"
+    : "";
+
+  return `${baseClasses} ${paddingClasses} ${interactiveClasses}`;
+};
 
 export const CardContainer: React.FC<CardContainerProps> = ({
   children,
-  padding = "default",
   isClickable = false,
+  padding = "default",
   className = "",
+  onClick,
 }) => {
-  let paddingClass = "";
-  switch (padding) {
-    case "none":
-      paddingClass = "p-0";
-      break;
-    case "small":
-      paddingClass = "p-2";
-      break;
-    case "default":
-      paddingClass = "p-4";
-      break;
-    case "large":
-      paddingClass = "p-6";
-      break;
-  }
+  const finalClasses = getCardClasses(isClickable, padding);
 
-  const clickableClasses = isClickable
-    ? "cursor-pointer hover:shadow-lg transition duration-200"
-    : "";
+  const Component = isClickable ? "button" : "div";
 
   return (
-    <div
-      className={`bg-white rounded-xl shadow-sm border border-gray-100 ${paddingClass} ${clickableClasses} ${className}`}
+    <Component
+      onClick={onClick}
+      className={`${finalClasses} ${className}`}
+      {...(isClickable && {
+        style: { display: "flex", flexDirection: "column" },
+      })}
     >
       {children}
-    </div>
+    </Component>
   );
 };

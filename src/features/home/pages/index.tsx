@@ -19,9 +19,13 @@ export const InstitutionalHubPage: React.FC = () => {
             position.coords.longitude,
           ];
           updateUserPosition(coords);
+          console.log("Geolocalização atualizada:", coords);
         },
         (error) => {
-          console.warn("Erro ao obter geolocalização. Usando mock:", error);
+          console.warn(
+            "Erro ao obter geolocalização. Usando mock (UFRR centro):",
+            error
+          );
           updateUserPosition([2.833, -60.693]);
         },
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
