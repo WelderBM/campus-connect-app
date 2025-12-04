@@ -1,5 +1,8 @@
-import type { JSX } from "react";
+import * as Geo from "./geo";
+import * as Identity from "./identity";
+import * as themes from "./themes";
 
+<<<<<<< HEAD
 export const THEME_COLORS = {
   ACADEMIC: {
     primary: "#A8DADC",
@@ -117,3 +120,6 @@ export interface Message {
   content: string;
   timestamp: number;
 }
+=======
+export default { Geo, Identity, themes };
+>>>>>>> parent of c338dfd (feat: Add core application types and theme constants.)
